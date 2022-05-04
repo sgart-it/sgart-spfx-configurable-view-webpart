@@ -13,8 +13,6 @@ const _httpOptionsGet: ISPHttpClientOptions = {
     headers: {
         'odata-version': '3.0',
         'accept': 'application/json;odata=nometadata',
-        //'X-ClientService-ClientTag': X_CLIENTSERVICE_CLIENTTAG,
-        //'User-Agent': X_USERAGENT
     }
 };
 
@@ -61,10 +59,6 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
             top,
             fields
         } = params;
-
-        /*if (isNullOrWhiteSpace(fields.title)) {
-            fields.title = 'Title';
-        }*/
 
         const fieldsName = [
             fields.title,
@@ -135,7 +129,6 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
             + (isNullOrWhiteSpace(orderBy) ? '' : '&$orderby=' + orderBy)
             + '&$top=' + top
             ;
-        //console.log('DataAccess.loadList.url', result.url);
 
         const response: SPHttpClientResponse = await _context.spHttpClient.get(result.url, SPHttpClient.configurations.v1, _httpOptionsGet);
         result.responseJson = await response.json();
