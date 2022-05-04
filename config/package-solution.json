@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "sgart-webpart-base-client-side-solution",
+    "id": "c6e0153f-f1fc-4066-a8b2-b2cca77f5f66",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "sgart-webpart-base description"
+      },
+      "longDescription": {
+        "default": "sgart-webpart-base description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "sgart-webpart-base Feature",
+        "description": "The feature that activates elements of the sgart-webpart-base solution.",
+        "id": "7c801433-9156-47cf-b540-a691e0ee55a2",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/sgart-webpart-base.sppkg"
+  }
+}

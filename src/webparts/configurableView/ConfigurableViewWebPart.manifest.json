@@ -1,0 +1,51 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "0e4eb195-e9be-4151-8337-90e44d24b75d",
+  "alias": "ConfigurableViewWebPart",
+  "componentType": "WebPart",
+  // The "*" signifies that the version should be taken from the package.json
+  "version": "*",
+  "manifestVersion": 2,
+  // If true, the component can only be installed on sites where Custom Script is allowed.
+  // Components that allow authors to embed arbitrary script code should set this to true.
+  // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart",
+    "TeamsPersonalApp",
+    "TeamsTab",
+    "SharePointFullPage"
+  ],
+  "supportsThemeVariants": true,
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
+      "group": {
+        "default": "Other"
+      },
+      "title": {
+        "default": "Configurable View"
+      },
+      "description": {
+        "default": "Flexible view web part (Sgart.it)"
+      },
+      "officeFabricIconFontName": "FavoriteList",
+      "properties": {
+        "webRelativeUrl": "",
+        "webpartTitle": "Configurable View",
+        "viewType": 2,
+        "columns": 4,
+        "listName": "Test Configurable View",
+        "topParam": 6,
+        "titleFieldName": "Title",
+        "descriptionFieldName": "Description",
+        "dateFieldName": "DataPub:date",
+        "userFieldName": "Author/Title",
+        "imageFieldName": "Image1:image",
+        "urlFieldName": "PageUrl:url",
+        "targetBlankFieldName": "OpenInNewWindow",
+        "inEvidenceFieldName": "InEvidence"
+      }
+    }
+  ]
+}

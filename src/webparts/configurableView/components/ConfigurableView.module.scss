@@ -1,0 +1,121 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+
+.configurableView {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+
+.title {
+  @include ms-fontSize-xl;
+  @include ms-fontWeight-semibold;
+  text-align: left;
+  color: "[theme:bodyText, default: #323130]";
+  margin: 0 0 10px 0;
+}
+
+.debugInfo {
+  margin-top: 20px;
+}
+
+
+.grid {
+  @include ms-Grid;
+  padding: 0;
+}
+
+.gridRow {
+  @include ms-Grid-row;
+  padding: 0;
+}
+
+.gridCol {
+  @include ms-Grid-col;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.gridCol2 {
+  @include ms-Grid-col;
+  @include ms-xl6;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.gridCol3 {
+  @include ms-Grid-col;
+  @include ms-xl4;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.gridCol4 {
+  @include ms-Grid-col;
+  @include ms-xl3;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.gridCol5 {
+  @include ms-Grid-col;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  @media (min-width: 1024px) {
+      width: 20%;
+  }
+}
+
+.gridCol6 {
+  @include ms-Grid-col;
+  @include ms-xl2;
+  @include ms-sm12;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.btnMax {
+  height: 60px;
+  width: 100%;
+  i {
+    font-size: 22px;
+  }
+  span[class~='ms-Button-label'] {
+    text-align: left;
+  }
+}
+
+.cardDateOnly {
+  div[class~="ms-DocumentCardActivity-avatar"], div[class~="ms-DocumentCardActivity-name"] {
+     display: none;
+  }
+  div[class~="ms-DocumentCardActivity-details"] {
+    left: 16px;
+ }
+}
+
+
+/*
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}
+*/
