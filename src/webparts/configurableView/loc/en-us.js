@@ -1,7 +1,7 @@
 define([], function () {
   return {
     "PropertyPaneDescription": "Flexible view web part (Sgart.it)",
-    "BasicGroupName": "General",
+    "PresentationGroupName": "Presentation",
     "ListGroupName": "List",
     "FieldsGroupName": "Fields",
     "AboutGroupName" : "About",

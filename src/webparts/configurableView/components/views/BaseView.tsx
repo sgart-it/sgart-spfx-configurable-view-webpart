@@ -41,13 +41,13 @@ export default class BaseView extends React.Component<IViewProps, {}> {
     const controls = items.map((item) => {
       const titleIsNull = item.title === "";
       const showImage =
-        titleIsNull === false && isNullOrWhiteSpace(item.image) === false;
+        titleIsNull === false && isNullOrWhiteSpace(item.image.src) === false;
 
       const previewPropsUsingIcon: IDocumentCardPreviewProps = {
         previewImages: [
           {
             previewIconProps: {
-              iconName: item.image,
+              iconName: item.image.src,
               styles: {
                 root: {
                   fontSize: fonts.superLarge.fontSize,

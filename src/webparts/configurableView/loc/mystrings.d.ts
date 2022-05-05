@@ -1,6 +1,6 @@
 declare interface IConfigurableViewWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
+  PresentationGroupName: string;
   ListGroupName: string;
   FieldsGroupName: string;
   AboutGroupName: string;

@@ -4,10 +4,15 @@ export interface IItem {
     description: string | null;
     date: string | null;
     user: string | null;
-    image: string | null;
+    image: IItemImage;
     url: string;
     targetBlank: boolean;
     inEvidence: boolean;
+}
+
+export interface IItemImage {
+    src: string | null;
+    isIcon: boolean;
 }
 
 export interface IResult {

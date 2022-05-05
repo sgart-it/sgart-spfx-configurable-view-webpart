@@ -43,14 +43,14 @@ export default class JsonView extends React.Component<
             ev: React.FormEvent<HTMLInputElement>,
             option: IChoiceGroupOption
           ) => {
-            console.log(option);
+            // console.log(option);
             this.setState({ tabSelected: option.key, title: option.text });
           }}
         />
         <div>
           <h4>{title}</h4>
           <hr />
-          <pre>
+          <pre style={{overflowX: 'auto'}}>
             {tabSelected === options[0].key && JSON.stringify(items, null, 2)}
             {tabSelected === options[1].key &&
               !isNullOrWhiteSpace(responseJson) &&

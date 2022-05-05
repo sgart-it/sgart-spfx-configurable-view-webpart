@@ -8,11 +8,12 @@ import {
   DocumentCardActivity,
   DocumentCardDetails,
   DocumentCardImage,
+  DocumentCardPreview,
   DocumentCardTitle,
   IDocumentCardActivityPerson,
+  IDocumentCardPreviewImage,
   IDocumentCardStyles,
   IIconProps,
-  ImageFit,
 } from "office-ui-fabric-react";
 import { getTheme } from "office-ui-fabric-react/lib/Styling";
 
@@ -56,7 +57,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
   private getCard(item: IItem) {
     const titleIsNull = item.title === "";
     const showImage =
-      titleIsNull === false && isNullOrWhiteSpace(item.image) === false;
+      titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
     const description = titleIsNull ? null : item.description;
     const url = titleIsNull ? null : item.url;
     const target = titleIsNull ? null : item.targetBlank ? "_blank" : "_self";
@@ -64,39 +65,63 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
     const showActivity =
       titleIsNull === false && (showUser || !isNullOrWhiteSpace(item.date));
 
-    const cardStyles: IDocumentCardStyles = {
+    // style
+    const fontIcon = fonts.xxLarge;
+    const imageHeight = 120;
+
+     const cardStyles: IDocumentCardStyles = {
       root: {
-        display: "inline-block",
-        marginRight: 20,
+        display: "block",
+        marginLeft: 0,
+        marginRight: 0,
+        marginTop: 0,
         marginBottom: 20,
+        minWidth: "100px",
+        maxWidth: "auto",
       },
     };
+    const cardClassName = item.inEvidence === true ? styles.borderColorPrimary : null;
 
-    /*const iconProps1: IIconProps = {
-      iconName: item.image,
-      styles: { root: { fontSize: "100px", width: "100px", height: "100px" } },
-    };*/
-
-    const fontIcon = fonts.xxLarge;
+    const previewImage : IDocumentCardPreviewImage = {
+      previewImageSrc: item.image.src,
+      height: imageHeight
+    };
 
     const iconProps: IIconProps = {
-      iconName: item.image,
+      iconName: item.image.src,
       styles: {
         root: {
-          width: '100%',
-          height: '100%',
-          lineHeight: 120,
-          textAlign: 'center',
-          verticalAlign: 'middle',
+          width: "100%",
+          height: "100%",
+          lineHeight: imageHeight,
+          textAlign: "center",
+          verticalAlign: "middle",
           fontSize: fontIcon.fontSize,
           fontWeight: fontIcon.fontWeight,
-          color: item.inEvidence ? palette.themeLight : semanticColors.bodyText,
-          backgroundColor: item.inEvidence
-            ? palette.accent
-            : null,
+          //color: item.inEvidence ? palette.themeLight : semanticColors.bodyText,
+          backgroundColor: item.inEvidence ? palette.accent : null,
         },
       },
     };
+
+    const titleClassName = item.inEvidence === true ? styles.colorPrimary : null;
+    const titleStyles: IDocumentCardStyles = {
+      root: {
+        color: item.inEvidence === true ? palette.themePrimary : semanticColors.bodyText,
+      },
+    };
+
+    const previewStyles: IDocumentCardStyles = {
+      root: {
+        display: "flex",
+        justifyContent: "center"
+      },
+    };
+
+    const imageControl = item.image.isIcon === true
+      ? <DocumentCardImage height={imageHeight} iconProps={iconProps} />
+      : <DocumentCardPreview previewImages={[previewImage]} styles={previewStyles} />
+      ;
 
     const people: IDocumentCardActivityPerson[] = [
       { name: showUser ? item.user : null, profileImageSrc: null },
@@ -108,10 +133,11 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
         onClickHref={url}
         onClickTarget={target}
         styles={cardStyles}
+        className={cardClassName}
       >
-        <DocumentCardImage height={120} iconProps={iconProps} />
+        {imageControl}
         <DocumentCardDetails>
-          <DocumentCardTitle title={item.title} />
+          <DocumentCardTitle title={item.title} className={titleClassName} />
           <DocumentCardTitle showAsSecondaryTitle title={description} />
         </DocumentCardDetails>
         {showActivity && (

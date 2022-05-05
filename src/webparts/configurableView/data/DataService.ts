@@ -2,7 +2,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions } from '@microsoft/sp-http';
 import { isNullOrWhiteSpace } from "../Helper";
 import { IListParams } from "./IListParam";
-import { IItem, IResult } from "./IItem";
+import { IItem, IItemImage, IResult } from "./IItem";
 import { escape } from "@microsoft/sp-lodash-subset";
 import { IFieldParams } from "./IFieldParams";
 
@@ -149,7 +149,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
                         description: getString(item, fields.description),
                         date: getDate(item, fields.date),
                         user: getString(item, fields.user),
-                        image: getString(item, fields.image),
+                        image: getImage(item, fields.image),
                         url: getString(item, fields.url),
                         targetBlank: getBoolean(item, fields.targetBlank),
                         inEvidence: getBoolean(item, fields.inEvidence)
@@ -203,60 +203,95 @@ const getFieldParams = (item: object, name: string): IFieldParams => {
 };
 
 const getString = (item: object, name: string): string | null => {
-    const p = getFieldParams(item, name);
-    if (null === p || undefined === p.value || null === p.value) return null;
+    try {
+        const p = getFieldParams(item, name);
+        if (null === p || undefined === p.value || null === p.value) return null;
 
-    switch (p.format) {
-        case 'html':
-            return p.value;
-        case 'url':
-            return p.value['Url'];
-        case 'description':
-            return escape(p.value['Description']);
-        default:
-            return escape(p.value);
+        switch (p.format) {
+            case 'html':
+                return p.value;
+            case 'url':
+                return p.value['Url'];
+            case 'description':
+                return escape(p.value['Description']);
+            case 'image':
+                if (p.value[0] === '{') {
+                    var j = JSON.parse(p.value);
+                    return j.serverRelativeUrl;
+                }
+                return p.value;
+            default:
+                return escape(p.value);
+        }
+    } catch (error) {
+        console.error('getString', error);
+        return null;
     }
+};
 
+const getImage = (item: object, name: string): IItemImage => {
+    try {
+        const value = getString(item, name);
+        return {
+            src: value,
+            isIcon: value === null ? false : value.indexOf('/') === -1
+        };
+    } catch (error) {
+        console.error('getImage', error);
+        return {
+            src: null,
+            isIcon: false
+        };
+    }
 };
 
 const getDate = (item: object, name: string): string | null => {
-    const p = getFieldParams(item, name);
-    if (null === p || undefined === p.value || null === p.value) return null;
+    try {
+        const p = getFieldParams(item, name);
+        if (null === p || undefined === p.value || null === p.value) return null;
 
-    if (p.name.length > 0 && p.name[0] === STATIC_TEXT_PREFIX)
-        return p.value;
+        if (p.name.length > 0 && p.name[0] === STATIC_TEXT_PREFIX)
+            return p.value;
 
-    let fieldName = p.name;
-    let format = '';
+        let fieldName = p.name;
+        let format = '';
 
-    const i = name.indexOf(':');
-    if (i > 0) {
-        fieldName = name.substring(0, i);
-        format = name.substring(i + 1).toLocaleLowerCase();
+        const i = name.indexOf(':');
+        if (i > 0) {
+            fieldName = name.substring(0, i);
+            format = name.substring(i + 1).toLocaleLowerCase();
+        }
+        const value = p.value;
+
+        if (undefined === value || null === value) return null;
+
+        if (format === 'iso' || format === 'string')
+            return value;
+
+        const date = new Date(value);
+
+        switch (format) {
+            case 'date':
+                return date.toLocaleString(_locale, _localeDateOptions);
+            case 'time':
+                return date.toLocaleString(_locale, _localeTimeOptions);
+            default:
+                return date.toLocaleString(_locale, _localeDateTimeOptions).replace(',', '');
+        }
+    } catch (error) {
+        console.error('getDate', error);
+        return null;
     }
-    const value = p.value;
-
-    if (undefined === value || null === value) return null;
-
-    if (format === 'iso' || format === 'string')
-        return value;
-
-    const date = new Date(value);
-
-    switch (format) {
-        case 'date':
-            return date.toLocaleString(_locale, _localeDateOptions);
-        case 'time':
-            return date.toLocaleString(_locale, _localeTimeOptions);
-        default:
-            return date.toLocaleString(_locale, _localeDateTimeOptions).replace(',', '');
-    }
-
 };
 
 const getBoolean = (item: object, name: string): boolean => {
-    const p = getFieldParams(item, name);
-    if (null === p || undefined === p.value || null === p.value) return null;
+    try {
+        const p = getFieldParams(item, name);
+        if (null === p || undefined === p.value || null === p.value) return null;
 
-    return p.value === true || p.value === 'true';
+        return p.value === true || p.value === 'true';
+    } catch (error) {
+        console.error('getBoolean', error);
+        return false;
+    }
 };

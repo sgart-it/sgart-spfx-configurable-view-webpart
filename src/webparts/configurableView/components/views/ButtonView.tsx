@@ -18,7 +18,7 @@ export default class ButtonView extends React.Component<IViewProps, {}> {
 
     const buttons = items.map((item: IItem, index: number) => {
       const target = item.targetBlank === true ? "_blank" : "_self";
-      const icon = typeof item.image === 'string' ? { iconName: item.image } : null;
+      const icon = typeof item.image.src === 'string' ? { iconName: item.image.src } : null;
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
 
       return (

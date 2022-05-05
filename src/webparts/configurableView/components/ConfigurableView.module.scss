@@ -103,6 +103,13 @@
  }
 }
 
+.colorPrimary {
+  color: "[theme:themePrimary, default: #00bcf2]";
+}
+
+.borderColorPrimary {
+  border-color: "[theme:themePrimary, default: #00bcf2]";
+}
 
 /*
 .links {

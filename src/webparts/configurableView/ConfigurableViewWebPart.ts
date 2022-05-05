@@ -113,7 +113,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.PresentationGroupName,
               groupFields: [
                 PropertyPaneTextField('webpartTitle', {
                   label: strings.WebPartTitleLabel

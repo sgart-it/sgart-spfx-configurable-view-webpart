@@ -94,3 +94,4 @@ gulp clear; gulp bundle --ship; gulp package-solution --ship
 - [Microsoft 365 Developer Community](https://aka.ms/m365pnp)
 - [Using Office UI Fabric Core and Fabric React in SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/office-ui-fabric-integration)
 - https://developer.microsoft.com/en-us/fluentui
+- [Theme json](https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/site-theming/sharepoint-site-theming-json-schema)
