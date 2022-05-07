@@ -17,6 +17,7 @@ import { IConfigurableViewProps } from './components/IConfigurableViewProps';
 import { IConfigurableViewWebPartProps } from './IConfigurableViewWebPartProps';
 import { initDataService } from './data/DataService';
 import { ViewType } from './components/ViewTypeEnum';
+import { ViewMode } from './components/ViewModeEnum';
 
 export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConfigurableViewWebPartProps> {
 
@@ -38,6 +39,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
         title: this.properties.webpartTitle,
         isPropertyPaneOpen: this.context.propertyPane.isPropertyPaneOpen(),
         viewType: this.properties.viewType,
+        viewMode: this.properties.viewModel,
         columns: this.properties.columns,
 
         webRelativeUrl: this.properties.webRelativeUrl,
@@ -62,6 +64,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
       }
     );
 
+    console.log('instance', this.context.instanceId);
     ReactDom.render(element, this.domElement);
   }
 
@@ -100,9 +103,15 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
     this.render();
 
     // carico i valori dell'enum
-    const viewTypeOptions = Object.keys(ViewType).filter((v) => isNaN(Number(v))).map(item => {
+    const viewTypeOptions = Object.keys(ViewType).sort().filter((v) => isNaN(Number(v))).map(item => {
       return { key: ViewType[item], text: item };
     });
+
+    const modeTypeOptions = Object.keys(ViewMode).sort().filter((v) => isNaN(Number(v))).map(item => {
+      return { key: ViewMode[item], text: item };
+    });
+
+    const showMode = this.properties.viewType !== ViewType.Mode;
 
     return {
       pages: [
@@ -122,12 +131,17 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                   label: strings.ViewTypeLabel,
                   options: viewTypeOptions
                 }),
+                PropertyPaneDropdown('viewMode', {
+                  label: strings.ViewTypeLabel,
+                  options: modeTypeOptions,
+                  disabled: showMode
+                }),
                 PropertyPaneSlider('columns', {
                   label: strings.ColumnsLabel,
                   min: 1,
                   max: 6,
                   step: 1,
-                  showValue: true
+                  showValue: true,
                 })
               ]
             },
@@ -206,7 +220,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                 })
               ]
             }
-           
+
           ]
         }
       ]

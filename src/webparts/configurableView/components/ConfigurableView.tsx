@@ -14,6 +14,7 @@ import ButtonView from "./views/ButtonView";
 import ButtonColumnView from "./views/ButtonColumnView";
 import CardColumnView from "./views/CardColumnView";
 import { IViewProps } from "./views/IViewProps";
+import ButtonColumnView2 from "./views/ModeView";
 
 const VERSION = "1.2022-05-03";
 
@@ -111,13 +112,14 @@ export default class ConfigurableView extends React.Component<
   }
 
   private getView(): React.ReactElement<IConfigurableViewProps> {
-    const { viewType, columns } = this.props;
+    const { viewType, viewMode, columns } = this.props;
     const { items } = this.state;
     try {
       const viepProps: IViewProps = {
         items,
         columns,
         viewType,
+        viewMode,
         responseJson: this.state.resultJson,
       };
 
@@ -127,6 +129,9 @@ export default class ConfigurableView extends React.Component<
 
         case ViewType.ButtonColumn:
           return <ButtonColumnView {...viepProps} />;
+
+        case ViewType.Mode:
+          return <ButtonColumnView2 {...viepProps} />;
 
         case ViewType.CardColumn:
           return <CardColumnView {...viepProps} />;

@@ -34,6 +34,7 @@
         "webRelativeUrl": "",
         "webpartTitle": "Configurable View",
         "viewType": 2,
+        "viewMode": 1,
         "columns": 4,
         "listName": "Test Configurable View",
         "topParam": 6,

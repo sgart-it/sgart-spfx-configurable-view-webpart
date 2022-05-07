@@ -1,23 +1,27 @@
-import { Stack, IStackTokens } from "office-ui-fabric-react/lib/Stack";
-
-import {
-  DefaultButton,
-  PrimaryButton,
-} from "office-ui-fabric-react/lib/Button";
 import * as React from "react";
 import { IItem } from "../../data/IItem";
 import { isNullOrWhiteSpace } from "../../Helper";
 import { IViewProps } from "./IViewProps";
 import styles from "../ConfigurableView.module.scss";
+import { ViewMode } from "../ViewModeEnum";
 
-export default class ButtonColumnView extends React.Component<IViewProps, {}> {
+export default class ModeView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
-    const { items, columns } = this.props;
+    const { items, viewMode, columns } = this.props;
+
+    let rootClassName = styles.modeButton;
+
     const controls = items.map((item: IItem, index: number) => {
+      const titleIsNull = item.title === "";
       const target = item.targetBlank === true ? "_blank" : "_self";
+      const showIcon = !isNullOrWhiteSpace(item.image?.src);
       const icon =
-        typeof item.image.src === "string" ? { iconName: item.image.src } : null;
+        showIcon && typeof item.image.src === "string"
+          ? { iconName: item.image.src }
+          : null;
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
+      const inEvidence = item.inEvidence ? " sgart-spfx-cv-evidence" : "";
+
       let classNameCol = styles.gridCol6;
       switch (columns) {
         case 1:
@@ -39,29 +43,24 @@ export default class ButtonColumnView extends React.Component<IViewProps, {}> {
 
       return (
         <div className={classNameCol}>
-          {item.inEvidence === true ? (
-            <PrimaryButton
-              text={item.title}
-              iconProps={icon}
-              href={url}
-              target={target}
-              className={styles.btnMax}
-            />
+          {titleIsNull ? (
+            <div className="sgart-spfx-cv-button sgart-spfx-cv-disbaled"></div>
           ) : (
-            <DefaultButton
-              text={item.title}
-              iconProps={icon}
-              href={url}
-              target={target}
-              className={styles.btnMax}
-            />
+            <a href={url} target={target} className={"sgart-spfx-cv-button" + inEvidence}>
+              {showIcon && (
+                <span className="sgart-spfx-cv-icon-container">
+                  <i data-icon-name={icon} aria-hidden="true"></i>
+                </span>
+              )}
+              <span className="sgart-spfx-cv-text-container">{item.title}</span>
+            </a>
           )}
         </div>
       );
     });
 
     return (
-      <div className={styles.grid} dir="ltr">
+      <div className={styles.grid + " " + rootClassName} dir="ltr">
         <div className={styles.gridRow}>{controls}</div>
       </div>
     );

@@ -1,8 +1,10 @@
+import { ViewMode } from "./components/ViewModeEnum";
 import { ViewType } from "./components/ViewTypeEnum";
 
 export interface IConfigurableViewWebPartProps {
   webpartTitle: string;
   viewType: ViewType;
+  viewModel: ViewMode;
   columns: number;
 
   webRelativeUrl: string;

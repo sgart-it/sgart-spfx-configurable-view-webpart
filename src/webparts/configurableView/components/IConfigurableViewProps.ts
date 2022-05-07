@@ -1,9 +1,11 @@
+import { ViewMode } from "./ViewModeEnum";
 import { ViewType } from "./ViewTypeEnum";
 
 export interface IConfigurableViewProps {
   title: string;
   isPropertyPaneOpen: boolean;
   viewType: ViewType;
+  viewMode: ViewMode;
   columns: number;
   
   webRelativeUrl: string;
