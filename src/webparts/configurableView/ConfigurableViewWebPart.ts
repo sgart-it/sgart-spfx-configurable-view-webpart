@@ -109,7 +109,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
         {
           displayGroupsAsAccordion: true,
           header: {
-            description: strings.PropertyPaneDescription
+            description: strings.PropertyHeaderDescription
           },
           groups: [
             {
@@ -132,7 +132,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
               ]
             },
             {
-              groupName: strings.ListGroupName,
+              groupName: strings.SourceGroupName,
               groupFields: [
                 PropertyPaneTextField('webRelativeUrl', {
                   label: strings.WebRelativeUrlLabel,
@@ -206,16 +206,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                 })
               ]
             }
-            /*,
-            {
-              groupName: "About",
-              groupFields: [
-                PropertyPaneLabel('titleFieldName', {
-                  label: strings.TitleFieldNameLabel,
-                  description: strings.TitleFieldNameDescription
-                })
-              ]
-            }*/
+           
           ]
         }
       ]

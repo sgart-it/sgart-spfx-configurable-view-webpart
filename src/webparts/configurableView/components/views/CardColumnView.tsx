@@ -44,7 +44,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
           break;
       }
 
-      return <div className={classNameCol}>{this.getCard(item)}</div>;
+      return <div className={classNameCol}>{this.getItem(item)}</div>;
     });
 
     return (
@@ -54,7 +54,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
     );
   }
 
-  private getCard(item: IItem) {
+  private getItem(item: IItem) {
     const titleIsNull = item.title === "";
     const showImage =
       titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
@@ -105,11 +105,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
     };
 
     const titleClassName = item.inEvidence === true ? styles.colorPrimary : null;
-    const titleStyles: IDocumentCardStyles = {
-      root: {
-        color: item.inEvidence === true ? palette.themePrimary : semanticColors.bodyText,
-      },
-    };
+
 
     const previewStyles: IDocumentCardStyles = {
       root: {

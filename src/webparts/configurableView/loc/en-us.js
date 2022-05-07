@@ -1,9 +1,9 @@
 define([], function () {
   return {
-    "PropertyPaneDescription": "Flexible view web part (Sgart.it)",
+    "PropertyHeaderDescription": "Flexible view web part (Sgart.it)",
     "PresentationGroupName": "Presentation",
-    "ListGroupName": "List",
-    "FieldsGroupName": "Fields",
+    "SourceGroupName": "Source",
+    "FieldsGroupName": "Field mappings",
     "AboutGroupName" : "About",
 
     "WebPartTitleLabel": "Web part title",
@@ -11,13 +11,13 @@ define([], function () {
     "ColumnsLabel": "Columns",
 
     "WebRelativeUrlLabel": "Web relative url",
-    "WebRelativeUrlDescription": "/ or /sites/name or blank for current site",
-    "ListNameLabel": "List title",
-    "ListNameDescription": "Display name of list or guid in the form {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx} or list path /Lists/listName or /DocLibName or /lists or /folders or /webinfos",
+    "WebRelativeUrlDescription": "/ for root site or /sites/name for a specific site collection or blank for current site",
+    "ListNameLabel": "List or document library title",
+    "ListNameDescription": "Display name of list or guid in the form {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx} or list (/Lists/listName or /DocLibName or /lists or /folders or /webinfos)",
     "FltersParamdLabel": "Filters",
-    "FltersParamdDescription": "Title eq 'xyz' or Modified gt datetime'2021-01-01T00:00:00Z' or startswith(Title, 'xyz') or month(PubDate) gt 6 or substringof('xyz', Title) eq true",
+    "FltersParamdDescription": "ex.: Title eq 'xyz' or Modified gt datetime'2021-01-01T00:00:00Z' or startswith(Title, 'xyz') or month(PubDate) gt 6 or substringof('xyz', Title) eq true",
     "OrderByParamyLabel": "Order by",
-    "OrderByParamyDescription": "Title, Modified desc",
+    "OrderByParamyDescription": "ex.: Title, Modified desc",
     "TopParamLabel": "Max items",
 
     "TitleFieldNameLabel": "Title",

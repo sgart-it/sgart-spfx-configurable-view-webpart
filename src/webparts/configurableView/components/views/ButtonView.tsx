@@ -12,7 +12,7 @@ import styles from "../ConfigurableView.module.scss";
 
 export default class ButtonView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
-    const { viewType, items } = this.props;
+    const { items } = this.props;
 
     const stackTokens: IStackTokens = { childrenGap: 15 };
 

@@ -8,100 +8,156 @@ import {
   DocumentCard,
   DocumentCardActivity,
   DocumentCardDetails,
+  DocumentCardImage,
   DocumentCardPreview,
   DocumentCardTitle,
   DocumentCardType,
   IDocumentCardActivityPerson,
+  IDocumentCardPreviewImage,
   IDocumentCardPreviewProps,
+  IDocumentCardStyles,
+  IIconProps,
 } from "office-ui-fabric-react";
-import { Stack, IStackTokens } from "office-ui-fabric-react/lib/Stack";
 
 const theme = getTheme();
 const { palette, fonts } = theme;
 
-const stackTokens: IStackTokens = { childrenGap: 20 };
-
 export default class BaseView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
-    const { items } = this.props;
+    const { items, columns } = this.props;
+
+    const controls = items.map((item: IItem, index: number) => {
+      let classNameCol = styles.gridCol6;
+      switch (columns) {
+        case 1:
+          classNameCol = styles.gridCol;
+          break;
+        case 2:
+          classNameCol = styles.gridCol2;
+          break;
+        case 3:
+          classNameCol = styles.gridCol3;
+          break;
+        case 4:
+          classNameCol = styles.gridCol4;
+          break;
+        case 5:
+          classNameCol = styles.gridCol5;
+          break;
+      }
+
+      return <div className={classNameCol}>{this.getItem(item)}</div>;
+    });
 
     return (
-      <Stack
-        wrap={false}
-        horizontalAlign={"space-between"}
-        verticalAlign={"space-between"}
-        tokens={stackTokens}
-      >
-        {this.getItems(items)}
-      </Stack>
+      <div className={styles.grid} dir="ltr">
+        <div className={styles.gridRow}>{controls}</div>
+      </div>
     );
   }
 
-  private getItems(items: IItem[]) {
-    const controls = items.map((item) => {
-      const titleIsNull = item.title === "";
-      const showImage =
-        titleIsNull === false && isNullOrWhiteSpace(item.image.src) === false;
+  private getItem(item: IItem) {
+    const titleIsNull = item.title === "";
+    const showImage =
+      titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
+    const description = titleIsNull ? null : item.description;
+    const url = titleIsNull ? null : item.url;
+    const target = titleIsNull ? null : item.targetBlank ? "_blank" : "_self";
+    const showUser = !isNullOrWhiteSpace(item.user);
+    const showActivity =
+      titleIsNull === false && (showUser || !isNullOrWhiteSpace(item.date));
 
-      const previewPropsUsingIcon: IDocumentCardPreviewProps = {
-        previewImages: [
-          {
-            previewIconProps: {
-              iconName: item.image.src,
-              styles: {
-                root: {
-                  fontSize: fonts.superLarge.fontSize,
-                  color: palette.white,
-                },
+    // style
+    const fontIcon = fonts.xxLarge;
+    const imageHeight = 120;
+
+    const previewPropsUsingIcon: IDocumentCardPreviewProps = {
+      previewImages: [
+        {
+          previewIconProps: {
+            iconName: item.image.src,
+            styles: {
+              root: {
+                fontSize: fonts.superLarge.fontSize,
               },
             },
-            width: 144,
           },
-        ],
-        styles: {
-          previewIcon: {
-            backgroundColor: item.inEvidence
-              ? palette.neutralPrimaryAlt
-              : palette.themePrimary,
-          },
+          width: 144,
         },
-      };
+      ]
+    };
 
-      const showUser = !isNullOrWhiteSpace(item.user);
-      const showActivity =
-        titleIsNull === false && (showUser || !isNullOrWhiteSpace(item.date));
+    const cardClassName =
+      item.inEvidence === true ? styles.borderColorPrimary : null;
 
-      const people: IDocumentCardActivityPerson[] = [
-        { name: showUser ? item.user : null, profileImageSrc: null },
-      ];
+    const previewImage: IDocumentCardPreviewImage = {
+      previewImageSrc: item.image.src,
+      height: imageHeight,
+    };
 
-      const description = titleIsNull ? null : item.description;
-      const url = titleIsNull ? null : item.url;
-      const target = titleIsNull ? null : item.targetBlank ? "_blank" : "_self";
+    const iconProps: IIconProps = {
+      iconName: item.image.src,
+      styles: {
+        root: {
+          width: "100%",
+          height: "100%",
+          lineHeight: imageHeight,
+          textAlign: "center",
+          verticalAlign: "middle",
+          fontSize: fontIcon.fontSize,
+          fontWeight: fontIcon.fontWeight,
+          //color: item.inEvidence ? palette.themeLight : semanticColors.bodyText,
+          backgroundColor: item.inEvidence ? palette.accent : null,
+        },
+      },
+    };
 
-      return (
-        <DocumentCard
-          aria-label={item.title}
-          type={DocumentCardType.compact}
-          onClickHref={url}
-          onClickTarget={target}
-        >
-          {showImage && <DocumentCardPreview {...previewPropsUsingIcon} />}
-          <DocumentCardDetails>
-            <DocumentCardTitle title={item.title} />
-            <DocumentCardTitle showAsSecondaryTitle title={description} />
-            {showActivity && (
-              <DocumentCardActivity
-                activity={item.date}
-                people={people}
-                className={showUser ? null : styles.cardDateOnly}
-              />
-            )}
-          </DocumentCardDetails>
-        </DocumentCard>
+    const titleClassName =
+      item.inEvidence === true ? styles.colorPrimary : null;
+
+    const previewStyles: IDocumentCardStyles = {
+      root: {
+        display: "flex",
+        justifyContent: "center",
+      },
+    };
+
+    const imageControl =
+      item.image.isIcon === true ? (
+        <DocumentCardPreview {...previewPropsUsingIcon}
+       
+        />
+      ) : (
+        <DocumentCardPreview
+          previewImages={[previewImage]}
+          styles={previewStyles}
+        />
       );
-    });
 
-    return controls;
+    const people: IDocumentCardActivityPerson[] = [
+      { name: showUser ? item.user : null, profileImageSrc: null },
+    ];
+
+    return (
+      <DocumentCard
+        aria-label={item.title}
+        onClickHref={url}
+        onClickTarget={target}
+        className={cardClassName}
+        type={DocumentCardType.compact}
+      >
+        {imageControl}
+        <DocumentCardDetails>
+          <DocumentCardTitle title={item.title} className={titleClassName} />
+          {showActivity && (
+            <DocumentCardActivity
+              activity={item.date}
+              people={people}
+              className={showUser ? null : styles.cardDateOnly}
+            />
+          )}
+        </DocumentCardDetails>
+      </DocumentCard>
+    );
   }
 }

@@ -13,6 +13,7 @@ import JsonView from "./views/JsonView";
 import ButtonView from "./views/ButtonView";
 import ButtonColumnView from "./views/ButtonColumnView";
 import CardColumnView from "./views/CardColumnView";
+import { IViewProps } from "./views/IViewProps";
 
 const VERSION = "1.2022-05-03";
 
@@ -113,39 +114,28 @@ export default class ConfigurableView extends React.Component<
     const { viewType, columns } = this.props;
     const { items } = this.state;
     try {
+      const viepProps: IViewProps = {
+        items,
+        columns,
+        viewType,
+        responseJson: this.state.resultJson,
+      };
+
       switch (viewType) {
         case ViewType.Button:
-          return <ButtonView viewType={viewType} items={items} />;
+          return <ButtonView {...viepProps} />;
 
         case ViewType.ButtonColumn:
-          return (
-            <ButtonColumnView
-              viewType={viewType}
-              items={items}
-              columns={columns}
-            />
-          );
+          return <ButtonColumnView {...viepProps} />;
 
         case ViewType.CardColumn:
-          return (
-            <CardColumnView
-              viewType={viewType}
-              items={items}
-              columns={columns}
-            />
-          );
+          return <CardColumnView {...viepProps} />;
 
         case ViewType.Json:
-          return (
-            <JsonView
-              viewType={viewType}
-              items={items}
-              responseJson={this.state.resultJson}
-            />
-          );
+          return <JsonView {...viepProps} />;
 
         default:
-          return <BaseView viewType={viewType} items={items} />;
+          return <BaseView {...viepProps} />;
       }
     } catch (error) {
       console.error("getView", error);
