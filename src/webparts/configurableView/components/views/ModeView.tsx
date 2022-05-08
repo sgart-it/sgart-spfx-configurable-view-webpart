@@ -11,17 +11,21 @@ export default class ModeView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
     const { items, viewModel, columns } = this.props;
 
-    const controls = items.map((item: IItem, index: number) => {
+    const controls = items.map((item: IItem) => {
       const titleIsNull = item.title === "";
       const target = item.targetBlank === true ? "_blank" : "_self";
-      const showIcon = !isNullOrWhiteSpace(item.image?.src);
-      const icon =
-        showIcon && typeof item.image?.src === "string"
-          ? { iconName: item.image.src }
-          : null;
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
-      const inEvidence = item.inEvidence ? " sgart-spfx-cv-evidence" : "";
+      const inEvidenceClassName =
+        item.inEvidence === true ? " sgart-spfx-cv-evidence" : "";
 
+      // icon or image
+      const imageCtrl = this.getImageCtrl(item, viewModel);
+      const noIconOrImageClassName =
+        imageCtrl === null ? " sgart-spfx-cv-no-icon" : "";
+      const imageClassName =
+        item.image?.isIcon === false ? " sgart-spfx-cv-image" : "";
+
+      // responsive
       let classNameCol = styles.gridCol6;
       switch (columns) {
         case 1:
@@ -49,15 +53,17 @@ export default class ModeView extends React.Component<IViewProps, {}> {
             <a
               href={url}
               target={target}
-              className={"sgart-spfx-cv-button" + inEvidence}
+              className={
+                "sgart-spfx-cv-button" +
+                inEvidenceClassName +
+                noIconOrImageClassName +
+                imageClassName
+              }
             >
-              {showIcon && (
-                <DocumentCardImage
-                  iconProps={icon}
-                  className="sgart-spfx-cv-icon-container"
-                />
-              )}
-              <span className="sgart-spfx-cv-text-container">{item.title}</span>
+              {imageCtrl}
+              <span className="sgart-spfx-cv-text-container">
+                <span className="sgart-spfx-cv-text">{item.title}</span>
+              </span>
             </a>
           )}
         </div>
@@ -81,5 +87,29 @@ export default class ModeView extends React.Component<IViewProps, {}> {
         <div className={styles.gridRow}>{controls}</div>
       </div>
     );
+  }
+
+  private getImageCtrl(item: IItem, viewModel: ViewModel) {
+    const showIconOrImage =
+      !isNullOrWhiteSpace(item.image?.src) && viewModel === ViewModel.Button;
+
+    if (showIconOrImage === false) return null;
+
+    const imageSrc = item.image.src;
+
+    if (item.image.isIcon) {
+      return (
+        <DocumentCardImage
+          iconProps={{ iconName: imageSrc }}
+          className="sgart-spfx-cv-icon-container"
+        />
+      );
+    } else {
+      return (
+        <div className="sgart-spfx-cv-icon-container">
+          <img src={imageSrc} />
+        </div>
+      );
+    }
   }
 }

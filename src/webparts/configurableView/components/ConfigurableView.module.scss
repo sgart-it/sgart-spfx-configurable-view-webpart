@@ -193,7 +193,8 @@ Orange theme
       user-select: text;
       cursor: pointer;
       text-decoration: none;
-      padding: 10px 14px;
+      padding: 0;
+      margin: 0;
 
       &:hover {
         text-decoration: none;
@@ -217,6 +218,23 @@ Orange theme
           border-color: "[theme:buttonBorderDisabled, default: #f3f2f1]";
         }
       }
+
+      &.sgart-spfx-cv-no-icon {
+        .sgart-spfx-cv-icon-container {
+          display: none;
+        }
+
+        .sgart-spfx-cv-text-container {
+          padding-left: 12px;
+        }
+      }
+
+      &.sgart-spfx-cv-image {
+        .sgart-spfx-cv-text-container {
+          padding-left: 12px;
+        }
+      }
+
     }
 
     .sgart-spfx-cv-icon-container {
@@ -224,24 +242,31 @@ Orange theme
       display: flex;
       align-items: center;
       align-content: center;
-      width: 22px;
+      width: 46px;
+      min-width: 46px;
       height: 100%;
-      margin: 0 14px 0 0;
+      margin: 0;
+      padding: 0;
       background-color: unset;
       border: 0;
+      overflow: hidden;
+
       i {
+        color: "[theme:bodyText, default: #323130]";
         width: 22px;
         height: 22px;
         font-size: 22px;
       }
-      img {
-        width: 22px;
-        height: 22px;
-      }
-    }
+    }  
 
     .sgart-spfx-cv-text-container {
       box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      align-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 10px 12px 10px 0;
     }
 
   }
