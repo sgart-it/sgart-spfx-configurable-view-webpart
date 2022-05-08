@@ -4,26 +4,47 @@ import { isNullOrWhiteSpace } from "../../Helper";
 import { IViewProps } from "./IViewProps";
 import styles from "../ConfigurableView.module.scss";
 import { ViewModel } from "../ViewModelEnum";
-import { DocumentCardImage } from "office-ui-fabric-react/lib/components/DocumentCard/DocumentCardImage";
-import { IIconProps } from "office-ui-fabric-react/lib/components/Icon/Icon.types";
+import ImageOrIcon, { IImageOrIconProps } from "../others/ImageOrIcon";
 
 export default class ModeView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
     const { items, viewModel, columns } = this.props;
 
-    const controls = items.map((item: IItem) => {
+    const controls = this.getControls(items, viewModel, columns);
+
+    const modelClassName = styles[`viewModel${ViewModel[viewModel]}`] ?? '';
+
+    const rootClassName = `${styles.grid} ${styles.viewModelBase} ${modelClassName}`;
+
+    return (
+      <div className={rootClassName} dir="ltr">
+        <div className={styles.gridRow}>{controls}</div>
+      </div>
+    );
+  }
+
+  private getControls(items: IItem[], viewModel: ViewModel, columns: number) {
+    return items.map((item: IItem) => {
       const titleIsNull = item.title === "";
       const target = item.targetBlank === true ? "_blank" : "_self";
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
       const inEvidenceClassName =
         item.inEvidence === true ? " sgart-spfx-cv-evidence" : "";
+      const showDescription = viewModel === ViewModel.ButtonMax;
 
       // icon or image
-      const imageCtrl = this.getImageCtrl(item, viewModel);
-      const noIconOrImageClassName =
-        imageCtrl === null ? " sgart-spfx-cv-no-icon" : "";
+      const noIconOrImageClassName = isNullOrWhiteSpace(item.image?.src)
+        ? " sgart-spfx-cv-no-icon"
+        : "";
       const imageClassName =
         item.image?.isIcon === false ? " sgart-spfx-cv-image" : "";
+      const imgProps: IImageOrIconProps = {
+        image: {
+          src: item.image?.src,
+          isIcon: item.image?.isIcon,
+        },
+        viewModel: viewModel,
+      };
 
       // responsive
       let classNameCol = styles.gridCol6;
@@ -60,56 +81,19 @@ export default class ModeView extends React.Component<IViewProps, {}> {
                 imageClassName
               }
             >
-              {imageCtrl}
+              <ImageOrIcon {...imgProps} />
               <span className="sgart-spfx-cv-text-container">
                 <span className="sgart-spfx-cv-text">{item.title}</span>
+                {showDescription && (
+                  <span className="sgart-spfx-cv-description">
+                    {item.description}
+                  </span>
+                )}
               </span>
             </a>
           )}
         </div>
       );
     });
-
-    let modelClassName = "";
-    switch (viewModel) {
-      case ViewModel.ButtonMini:
-        modelClassName = styles.viewModelButtonMini;
-        break;
-    }
-
-    return (
-      <div
-        className={
-          styles.grid + " " + styles.viewModelBase + " " + modelClassName
-        }
-        dir="ltr"
-      >
-        <div className={styles.gridRow}>{controls}</div>
-      </div>
-    );
-  }
-
-  private getImageCtrl(item: IItem, viewModel: ViewModel) {
-    const showIconOrImage =
-      !isNullOrWhiteSpace(item.image?.src) && viewModel === ViewModel.Button;
-
-    if (showIconOrImage === false) return null;
-
-    const imageSrc = item.image.src;
-
-    if (item.image.isIcon) {
-      return (
-        <DocumentCardImage
-          iconProps={{ iconName: imageSrc }}
-          className="sgart-spfx-cv-icon-container"
-        />
-      );
-    } else {
-      return (
-        <div className="sgart-spfx-cv-icon-container">
-          <img src={imageSrc} />
-        </div>
-      );
-    }
   }
 }

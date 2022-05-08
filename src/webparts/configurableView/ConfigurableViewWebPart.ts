@@ -103,15 +103,15 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
     this.render();
 
     // carico i valori dell'enum
-    const viewTypeOptions = Object.keys(ViewType).sort().filter((v) => isNaN(Number(v))).map(item => {
+    const viewTypeOptions = Object.keys(ViewType).filter((v) => isNaN(Number(v))).map(item => {
       return { key: ViewType[item], text: item };
     });
 
-    const modelTypeOptions = Object.keys(ViewModel).sort().filter((v) => isNaN(Number(v))).map(item => {
+    const modelTypeOptions = Object.keys(ViewModel).filter((v) => isNaN(Number(v))).map(item => {
       return { key: ViewModel[item], text: item };
     });
 
-    const showMode = this.properties.viewType !== ViewType.Mode;
+    const showMode = this.properties.viewType !== ViewType.Model;
 
     return {
       pages: [

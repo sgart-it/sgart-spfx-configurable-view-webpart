@@ -3,6 +3,6 @@ export enum ViewType {
     Button = 2,
     ButtonColumn = 3,
     CardColumn = 4,
-    Mode = 5,
+    Model = 5,
     Json = 1000
 }

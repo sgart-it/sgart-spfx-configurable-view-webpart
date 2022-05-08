@@ -129,7 +129,7 @@ export default class ConfigurableView extends React.Component<
         case ViewType.ButtonColumn:
           return <ButtonColumnView {...viewProps} />;
 
-        case ViewType.Mode:
+        case ViewType.Model:
           return <ButtonColumnView2 {...viewProps} />;
 
         case ViewType.CardColumn:
