@@ -3,5 +3,6 @@ export enum ViewModel {
     ButtonMini = 2,
     ButtonIcon = 3,
     ButtonMax = 4,
-    ButtonImageFull = 5.
+    ButtonImageFull = 5,
+    Card = 6
 }

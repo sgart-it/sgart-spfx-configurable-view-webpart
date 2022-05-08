@@ -147,11 +147,11 @@ Orange theme
 }
 
 .colorPrimary {
-  color: "[theme:themePrimary, default: #00bcf2]";
+  color: "[theme:themePrimary, default: #0078d4]";
 }
 
 .borderColorPrimary {
-  border-color: "[theme:themePrimary, default: #00bcf2]";
+  border-color: "[theme:themePrimary, default: #0078d4]";
 }
 
 /*
@@ -189,7 +189,7 @@ Orange theme
       overflow: hidden;
       border-width: 1px;
       border-style: solid;
-      border-color: "[theme:themePrimary, default: #00bcf2]";
+      border-color: "[theme:themePrimary, default: #0078d4]";
       border-radius: "[theme:roundedCorner2, default: 2px]";
       user-select: text;
       cursor: pointer;
@@ -222,7 +222,7 @@ Orange theme
         }
       }
 
-      &.sgart-spfx-cv-disbaled {
+      &.sgart-spfx-cv-disabled {
         background-color: "[theme:bodyBackground, default: #ffffff]";
         border-color: "[theme:buttonBorderDisabled, default: #f3f2f1]";
         cursor: default;
@@ -263,7 +263,7 @@ Orange theme
       height: 62px;
       margin: 0;
       padding: 0;
-      background-color: unset;
+      background-color: "[theme:bodyStandoutBackground, default: #faf9f8]";
       border: 0;
       overflow: hidden;
 
@@ -275,6 +275,7 @@ Orange theme
       }
 
       img {
+        box-sizing: border-box;
         display: block;
         opacity: 1;
         width: auto;
@@ -293,13 +294,19 @@ Orange theme
     }
 
     .sgart-spfx-cv-description {
+      box-sizing: border-box;
       display: none;
       /*color: "[theme:bodySubtext, default: #605e5c]";*/
       color: "[theme:bodyText, default: #323130]";
       @include ms-fontSize-12;
     }
 
+    .sgart-spfx-cv-text {
+      box-sizing: border-box;
+    }
+
     .sgart-spfx-cv-evidence-flag {
+      box-sizing: border-box;
       display: none;
     }
   }
@@ -362,7 +369,7 @@ Orange theme
 
     .sgart-spfx-cv-text {
       display: block;
-      font-weight: 600;
+      @include ms-fontSize-16;
     }
 
     .sgart-spfx-cv-description {
@@ -376,6 +383,7 @@ Orange theme
   :global {
 
     .sgart-spfx-cv-button {
+
       &.sgart-spfx-cv-evidence {
         background-color: "[theme:bodyBackground, default: #ffffff]";
         color: "[theme:bodyText, default: #323130]";
@@ -390,7 +398,7 @@ Orange theme
           height: 0;
           border-bottom: 20px solid red;
           border-left: 20px solid transparent;
-          border-bottom-color: "[theme:themePrimary, default: #00bcf2]"
+          border-bottom-color: "[theme:themePrimary, default: #0078d4]"
         }
       }
     }
@@ -419,9 +427,72 @@ Orange theme
     }
 
     .sgart-spfx-cv-text {
+      @include ms-fontSize-16;
       background-color: "[theme:bodyStandoutBackground, default: #faf9f8]";
       padding: 5px 12px;
-      font-weight: 600;
+    }
+
+  }
+}
+
+.viewModelBase.viewModelCard {
+  :global {
+
+    .sgart-spfx-cv-button {
+      flex-direction: column;
+      height: auto;
+      border-color: "[theme:bodyDivider, default: #edebe9]";
+      border-radius: 0;
+      background-color: "[theme:bodyBackground, default: #ffffff]";
+
+      &:hover {
+        background-color: unset;
+        border-color: "[theme:buttonBackgroundChecked, default: #c8c6c4]";
+      }
+
+      &.sgart-spfx-cv-evidence {
+        border-color: "[theme:themePrimary, default: #0078d4]";
+
+        &:hover {
+          border-color :"[theme:linkHovered, default: #004578]";
+        }
+
+        .sgart-spfx-cv-text {
+          color: "[theme:themePrimary, default: #0078d4]";
+        }
+
+        .sgart-spfx-cv-description {
+          color: "[theme:bodyText, default: #323130]";
+          color: var(--bodyText);
+        }
+      }
+    }
+
+    .sgart-spfx-cv-icon-container {
+      width: 100%;
+      height: 121px;
+      border-bottom: 1px solid transparent;
+      border-bottom-color: "[theme:bodyDivider, default: #edebe9]";
+    }
+
+    .sgart-spfx-cv-text-container {
+      flex-direction: column;
+      padding: 0;
+      align-items: flex-start;
+    }
+    
+
+    .sgart-spfx-cv-text {
+      @include ms-fontSize-18;
+      height: 54px;
+      padding: 8px 16px;
+    }
+    
+    .sgart-spfx-cv-description {
+      display: block;
+      @include ms-fontSize-14;
+      height: 61px;
+      padding: 8px 16px;
     }
 
   }
@@ -432,4 +503,7 @@ border: 1px solid rgb(202, 80, 16); #CA5010
 rgb(250, 249, 248) #faf9f8
 rgb(113, 45, 9) #712d09
 rgb(0, 69, 120) #004578
+rgb(237, 235, 233) #edebe9
+rgb(200, 198, 196) #c8c6c4
+
 */

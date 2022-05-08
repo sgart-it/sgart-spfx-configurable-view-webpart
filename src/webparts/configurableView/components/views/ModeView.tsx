@@ -30,7 +30,7 @@ export default class ModeView extends React.Component<IViewProps, {}> {
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
       const inEvidenceClassName =
         item.inEvidence === true ? " sgart-spfx-cv-evidence" : "";
-      const showDescription = viewModel === ViewModel.ButtonMax;
+      const showDescription = viewModel === ViewModel.ButtonMax || viewModel === ViewModel.Card;
 
       // icon or image
       const noIconOrImageClassName = isNullOrWhiteSpace(item.image?.src)
@@ -69,7 +69,7 @@ export default class ModeView extends React.Component<IViewProps, {}> {
       return (
         <div className={classNameCol}>
           {titleIsNull ? (
-            <div className="sgart-spfx-cv-button sgart-spfx-cv-disbaled"></div>
+            <div className="sgart-spfx-cv-button sgart-spfx-cv-disabled"></div>
           ) : (
             <a
               href={url}

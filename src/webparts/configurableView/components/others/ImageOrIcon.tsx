@@ -21,7 +21,8 @@ export default class ImageOrIcon extends React.Component<
       (viewModel === ViewModel.Button ||
         viewModel === ViewModel.ButtonIcon ||
         viewModel === ViewModel.ButtonMax ||
-        viewModel === ViewModel.ButtonImageFull);
+        viewModel === ViewModel.ButtonImageFull ||
+        viewModel === ViewModel.Card);
 
     if (showIconOrImage === false) return null;
 
