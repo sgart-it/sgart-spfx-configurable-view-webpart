@@ -17,7 +17,7 @@ import { IConfigurableViewProps } from './components/IConfigurableViewProps';
 import { IConfigurableViewWebPartProps } from './IConfigurableViewWebPartProps';
 import { initDataService } from './data/DataService';
 import { ViewType } from './components/ViewTypeEnum';
-import { ViewMode } from './components/ViewModeEnum';
+import { ViewModel } from './components/ViewModelEnum';
 
 export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConfigurableViewWebPartProps> {
 
@@ -39,7 +39,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
         title: this.properties.webpartTitle,
         isPropertyPaneOpen: this.context.propertyPane.isPropertyPaneOpen(),
         viewType: this.properties.viewType,
-        viewMode: this.properties.viewModel,
+        viewModel: this.properties.viewModel,
         columns: this.properties.columns,
 
         webRelativeUrl: this.properties.webRelativeUrl,
@@ -107,8 +107,8 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
       return { key: ViewType[item], text: item };
     });
 
-    const modeTypeOptions = Object.keys(ViewMode).sort().filter((v) => isNaN(Number(v))).map(item => {
-      return { key: ViewMode[item], text: item };
+    const modelTypeOptions = Object.keys(ViewModel).sort().filter((v) => isNaN(Number(v))).map(item => {
+      return { key: ViewModel[item], text: item };
     });
 
     const showMode = this.properties.viewType !== ViewType.Mode;
@@ -131,9 +131,9 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                   label: strings.ViewTypeLabel,
                   options: viewTypeOptions
                 }),
-                PropertyPaneDropdown('viewMode', {
-                  label: strings.ViewTypeLabel,
-                  options: modeTypeOptions,
+                PropertyPaneDropdown('viewModel', {
+                  label: strings.ViewModelLabel,
+                  options: modelTypeOptions,
                   disabled: showMode
                 }),
                 PropertyPaneSlider('columns', {

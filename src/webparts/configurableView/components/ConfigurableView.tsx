@@ -41,10 +41,7 @@ export default class ConfigurableView extends React.Component<
       title,
       isPropertyPaneOpen,
       viewType,
-      listName,
-      filtersParam,
-      orderByParam,
-      topParam,
+      viewModel,
 
       isDarkTheme,
       environmentMessage,
@@ -54,9 +51,10 @@ export default class ConfigurableView extends React.Component<
 
     const isTitleVivible = !isNullOrWhiteSpace(title);
 
-    let view: React.ReactElement<IConfigurableViewProps> = null;
+    let viewCtrl: React.ReactElement<IConfigurableViewProps> = null;
+
     try {
-      view = this.getView();
+      viewCtrl = this.getView();
     } catch (error) {
       this.setState({
         success: false,
@@ -82,7 +80,7 @@ export default class ConfigurableView extends React.Component<
           </MessageBar>
         )}
 
-        {view}
+        {viewCtrl}
 
         {isPropertyPaneOpen && (
           <MessageBar
@@ -103,6 +101,7 @@ export default class ConfigurableView extends React.Component<
             </div>
             <hr />
             <div>ViewType: {viewType}</div>
+            <div>ViewModel: {viewModel}</div>
             <hr />
             <div>API url: {this.state.url}</div>
           </MessageBar>
@@ -112,35 +111,35 @@ export default class ConfigurableView extends React.Component<
   }
 
   private getView(): React.ReactElement<IConfigurableViewProps> {
-    const { viewType, viewMode, columns } = this.props;
+    const { viewType, viewModel, columns } = this.props;
     const { items } = this.state;
     try {
-      const viepProps: IViewProps = {
+      const viewProps: IViewProps = {
         items,
         columns,
         viewType,
-        viewMode,
+        viewModel,
         responseJson: this.state.resultJson,
       };
 
       switch (viewType) {
         case ViewType.Button:
-          return <ButtonView {...viepProps} />;
+          return <ButtonView {...viewProps} />;
 
         case ViewType.ButtonColumn:
-          return <ButtonColumnView {...viepProps} />;
+          return <ButtonColumnView {...viewProps} />;
 
         case ViewType.Mode:
-          return <ButtonColumnView2 {...viepProps} />;
+          return <ButtonColumnView2 {...viewProps} />;
 
         case ViewType.CardColumn:
-          return <CardColumnView {...viepProps} />;
+          return <CardColumnView {...viewProps} />;
 
         case ViewType.Json:
-          return <JsonView {...viepProps} />;
+          return <JsonView {...viewProps} />;
 
         default:
-          return <BaseView {...viepProps} />;
+          return <BaseView {...viewProps} />;
       }
     } catch (error) {
       console.error("getView", error);

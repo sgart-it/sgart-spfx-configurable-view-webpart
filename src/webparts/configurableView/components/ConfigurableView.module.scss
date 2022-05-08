@@ -169,8 +169,9 @@ Orange theme
   }
 }
 */
+/* VIEW MODEL */
 
-.modeButton {
+.viewModelBase {
   :global{
     .sgart-spfx-cv-button {
       box-sizing: border-box;
@@ -226,17 +227,39 @@ Orange theme
       width: 22px;
       height: 100%;
       margin: 0 14px 0 0;
+      background-color: unset;
+      border: 0;
+      i {
+        width: 22px;
+        height: 22px;
+        font-size: 22px;
+      }
+      img {
+        width: 22px;
+        height: 22px;
+      }
     }
 
     .sgart-spfx-cv-text-container {
       box-sizing: border-box;
-
     }
 
-    .sgart-spfx-cv-text {
-      box-sizing: border-box;
+  }
+}
 
+.viewModelButtonMini {
+  :global {
+
+    .sgart-spfx-cv-button {
+      justify-content: center;
+      height: 31px;
+      padding: 5px 7px;
     }
+
+    .sgart-spfx-cv-icon-container {
+      display: none;
+    }
+
   }
 }
 

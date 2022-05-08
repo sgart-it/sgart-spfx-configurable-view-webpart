@@ -1,10 +1,10 @@
 import { IItem, IResult } from "../../data/IItem";
-import { ViewMode } from "../ViewModeEnum";
+import { ViewModel } from "../ViewModelEnum";
 import { ViewType } from "../ViewTypeEnum";
 
 export interface IViewProps {
   viewType: ViewType;
-  viewMode: ViewMode;
+  viewModel: ViewModel;
   columns?: number;
   items: IItem[];
   responseJson?: any;

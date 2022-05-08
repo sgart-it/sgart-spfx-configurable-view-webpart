@@ -8,6 +8,7 @@ define([], function () {
 
     "WebPartTitleLabel": "Web part title",
     "ViewTypeLabel": "View type",
+    "ViewModelLabel": "View model",
     "ColumnsLabel": "Columns",
 
     "WebRelativeUrlLabel": "Web relative url",

@@ -7,6 +7,7 @@ declare interface IConfigurableViewWebPartStrings {
 
   WebPartTitleLabel: string;
   ViewTypeLabel: string;
+  ViewModelLabel: string;
   ColumnsLabel: string;
 
   WebRelativeUrlLabel: string;
