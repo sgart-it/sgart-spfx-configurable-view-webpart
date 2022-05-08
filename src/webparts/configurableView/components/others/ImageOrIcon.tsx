@@ -19,8 +19,9 @@ export default class ImageOrIcon extends React.Component<
     const showIconOrImage =
       !isNullOrWhiteSpace(image?.src) &&
       (viewModel === ViewModel.Button ||
-        viewModel === ViewModel.ButtonImageLeft ||
-        viewModel === ViewModel.ButtonMax);
+        viewModel === ViewModel.ButtonIcon ||
+        viewModel === ViewModel.ButtonMax ||
+        viewModel === ViewModel.ButtonImageFull);
 
     if (showIconOrImage === false) return null;
 

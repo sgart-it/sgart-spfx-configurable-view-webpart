@@ -90,6 +90,7 @@ export default class ModeView extends React.Component<IViewProps, {}> {
                   </span>
                 )}
               </span>
+              <span className="sgart-spfx-cv-evidence-flag"></span>
             </a>
           )}
         </div>

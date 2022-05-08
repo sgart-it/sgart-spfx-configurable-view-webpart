@@ -178,6 +178,7 @@ Orange theme
       background-color: "[theme:bodyBackground, default: #ffffff]";
       color: "[theme:bodyText, default: #323130]";
       color: var(--bodyText);
+      position: relative;
       display: flex;
       align-items: center;
       @include ms-fontSize-14;
@@ -288,7 +289,7 @@ Orange theme
       align-content: center;
       width: 100%;
       height: 100%;
-      padding: 10px 12px 10px 0;
+      padding: 10px 12px;
     }
 
     .sgart-spfx-cv-description {
@@ -298,6 +299,9 @@ Orange theme
       @include ms-fontSize-12;
     }
 
+    .sgart-spfx-cv-evidence-flag {
+      display: none;
+    }
   }
 }
 
@@ -306,7 +310,7 @@ Orange theme
 
     .sgart-spfx-cv-button {
       justify-content: center;
-      height: 31px;
+      height: 32px;
     }
 
     .sgart-spfx-cv-icon-container {
@@ -314,12 +318,24 @@ Orange theme
     }
 
     .sgart-spfx-cv-text-container {
-      padding: 12px 1px;
+      padding: 0 12px;
     }
   }
 }
 
-.viewModelButtonMax {
+.viewModelBase.viewModelButtonIcon {
+  :global {
+
+    .sgart-spfx-cv-icon-container {
+      img {
+        width: auto;
+        height: 22px;
+      }
+    }
+  }
+}
+
+.viewModelBase.viewModelButtonMax {
   :global {
 
     .sgart-spfx-cv-button {
@@ -356,6 +372,60 @@ Orange theme
   }
 }
 
+.viewModelBase.viewModelButtonImageFull {
+  :global {
+
+    .sgart-spfx-cv-button {
+      &.sgart-spfx-cv-evidence {
+        background-color: "[theme:bodyBackground, default: #ffffff]";
+        color: "[theme:bodyText, default: #323130]";
+        color: var(--bodyText);
+
+        .sgart-spfx-cv-evidence-flag {
+          display: block;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 0;
+          height: 0;
+          border-bottom: 20px solid red;
+          border-left: 20px solid transparent;
+          border-bottom-color: "[theme:themePrimary, default: #00bcf2]"
+        }
+      }
+    }
+
+    .sgart-spfx-cv-icon-container {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      
+      img {
+        width: 100%;
+        height: auto;
+
+      }
+
+    }
+
+    .sgart-spfx-cv-text-container {
+      justify-content: center;
+      padding: 0;
+      z-index: 1;
+    }
+
+    .sgart-spfx-cv-text {
+      background-color: "[theme:bodyStandoutBackground, default: #faf9f8]";
+      padding: 5px 12px;
+      font-weight: 600;
+    }
+
+  }
+}
 /*
 color: rgb(50, 49, 48); #323130 
 border: 1px solid rgb(202, 80, 16); #CA5010 
