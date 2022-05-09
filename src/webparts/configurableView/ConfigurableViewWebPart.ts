@@ -56,6 +56,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
         urlFieldName: this.properties.urlFieldName,
         targetBlankFieldName: this.properties.targetBlankFieldName,
         inEvidenceFieldName: this.properties.inEvidenceFieldName,
+        buttonTextFieldName: this.properties.buttonTextFieldName,
 
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
@@ -203,6 +204,10 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                 PropertyPaneTextField('targetBlankFieldName', {
                   label: strings.TargetBlankFieldNameLabel,
                   description: strings.TargetBlankFieldNameDescription
+                }),
+                PropertyPaneTextField('buttonTextFieldName', {
+                  label: strings.ButtonTextFieldNameLabel,
+                  description: strings.ButtonTextFieldNameDescription
                 }),
                 PropertyPaneTextField('inEvidenceFieldName', {
                   label: strings.InEvidenceFieldNameLabel,

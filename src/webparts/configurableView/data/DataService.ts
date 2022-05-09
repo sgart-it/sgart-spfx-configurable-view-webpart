@@ -68,7 +68,8 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
             fields.image,
             fields.url,
             fields.targetBlank,
-            fields.inEvidence
+            fields.inEvidence,
+            fields.buttonText
         ];
         const validFields = fieldsName.filter(name => !isNullOrWhiteSpace(name) && name[0] !== STATIC_TEXT_PREFIX);
 
@@ -152,7 +153,8 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
                         image: getImage(item, fields.image),
                         url: getString(item, fields.url),
                         targetBlank: getBoolean(item, fields.targetBlank),
-                        inEvidence: getBoolean(item, fields.inEvidence)
+                        inEvidence: getBoolean(item, fields.inEvidence),
+                        buttonText: getString(item, fields.buttonText)
                     };
                 });
 

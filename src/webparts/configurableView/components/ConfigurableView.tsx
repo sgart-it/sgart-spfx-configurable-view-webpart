@@ -14,9 +14,9 @@ import ButtonView from "./views/ButtonView";
 import ButtonColumnView from "./views/ButtonColumnView";
 import CardColumnView from "./views/CardColumnView";
 import { IViewProps } from "./views/IViewProps";
-import ButtonColumnView2 from "./views/ModeView";
+import ModelView from "./views/ModelView";
 
-const VERSION = "1.2022-05-03";
+const VERSION = "1.2022-05-09";
 
 export default class ConfigurableView extends React.Component<
   IConfigurableViewProps,
@@ -130,7 +130,7 @@ export default class ConfigurableView extends React.Component<
           return <ButtonColumnView {...viewProps} />;
 
         case ViewType.Model:
-          return <ButtonColumnView2 {...viewProps} />;
+          return <ModelView {...viewProps} />;
 
         case ViewType.CardColumn:
           return <CardColumnView {...viewProps} />;
@@ -190,6 +190,7 @@ export default class ConfigurableView extends React.Component<
         url: this.props.urlFieldName,
         targetBlank: this.props.targetBlankFieldName,
         inEvidence: this.props.inEvidenceFieldName,
+        buttonText: this.props.buttonTextFieldName
       },
     };
 

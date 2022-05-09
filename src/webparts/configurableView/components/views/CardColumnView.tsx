@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IItem } from "../../data/IItem";
-import { isNullOrWhiteSpace } from "../../Helper";
+import { isNullOrWhiteSpace, getClassNameCol } from "../../Helper";
 import { IViewProps } from "./IViewProps";
 import styles from "../ConfigurableView.module.scss";
 import {
@@ -25,24 +25,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
     const { items, columns } = this.props;
 
     const controls = items.map((item: IItem, index: number) => {
-      let classNameCol = styles.gridCol6;
-      switch (columns) {
-        case 1:
-          classNameCol = styles.gridCol;
-          break;
-        case 2:
-          classNameCol = styles.gridCol2;
-          break;
-        case 3:
-          classNameCol = styles.gridCol3;
-          break;
-        case 4:
-          classNameCol = styles.gridCol4;
-          break;
-        case 5:
-          classNameCol = styles.gridCol5;
-          break;
-      }
+      const classNameCol = getClassNameCol(columns);
 
       return <div className={classNameCol}>{this.getItem(item)}</div>;
     });
@@ -69,7 +52,7 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
     const fontIcon = fonts.xxLarge;
     const imageHeight = 120;
 
-     const cardStyles: IDocumentCardStyles = {
+    const cardStyles: IDocumentCardStyles = {
       root: {
         display: "block",
         marginLeft: 0,
@@ -80,11 +63,12 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
         maxWidth: "auto",
       },
     };
-    const cardClassName = item.inEvidence === true ? styles.borderColorPrimary : null;
+    const cardClassName =
+      item.inEvidence === true ? styles.borderColorPrimary : null;
 
-    const previewImage : IDocumentCardPreviewImage = {
+    const previewImage: IDocumentCardPreviewImage = {
       previewImageSrc: item.image.src,
-      height: imageHeight
+      height: imageHeight,
     };
 
     const iconProps: IIconProps = {
@@ -104,21 +88,25 @@ export default class CardColumnView extends React.Component<IViewProps, {}> {
       },
     };
 
-    const titleClassName = item.inEvidence === true ? styles.colorPrimary : null;
-
+    const titleClassName =
+      item.inEvidence === true ? styles.colorPrimary : null;
 
     const previewStyles: IDocumentCardStyles = {
       root: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
       },
     };
 
-    const imageControl = item.image.isIcon === true
-      ? <DocumentCardImage height={imageHeight} iconProps={iconProps} />
-      : <DocumentCardPreview previewImages={[previewImage]} styles={previewStyles} />
-      ;
-
+    const imageControl =
+      item.image.isIcon === true ? (
+        <DocumentCardImage height={imageHeight} iconProps={iconProps} />
+      ) : (
+        <DocumentCardPreview
+          previewImages={[previewImage]}
+          styles={previewStyles}
+        />
+      );
     const people: IDocumentCardActivityPerson[] = [
       { name: showUser ? item.user : null, profileImageSrc: null },
     ];

@@ -33,9 +33,9 @@
       "properties": {
         "webRelativeUrl": "",
         "webpartTitle": "Configurable View",
-        "viewType": 2,
+        "viewType": 5,
         "viewModel": 1,
-        "columns": 4,
+        "columns": 3,
         "listName": "Test Configurable View",
         "topParam": 6,
         "titleFieldName": "Title",
@@ -45,7 +45,8 @@
         "imageFieldName": "Image1:image",
         "urlFieldName": "PageUrl:url",
         "targetBlankFieldName": "OpenInNewWindow",
-        "inEvidenceFieldName": "InEvidence"
+        "inEvidenceFieldName": "InEvidence",
+        "buttonTextFieldName": "#ALTRE INFORMAZIONI"
       }
     }
   ]

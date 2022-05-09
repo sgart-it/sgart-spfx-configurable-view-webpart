@@ -22,6 +22,7 @@ export interface IConfigurableViewProps {
   urlFieldName: string;
   targetBlankFieldName: string;
   inEvidenceFieldName: string;
+  buttonTextFieldName: string;
 
   isDarkTheme: boolean;
   environmentMessage: string;

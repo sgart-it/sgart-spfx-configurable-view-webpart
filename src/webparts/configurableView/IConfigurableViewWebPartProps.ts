@@ -21,4 +21,5 @@ export interface IConfigurableViewWebPartProps {
   urlFieldName: string;
   targetBlankFieldName: string;
   inEvidenceFieldName: string;
+  buttonTextFieldName: string;
 }

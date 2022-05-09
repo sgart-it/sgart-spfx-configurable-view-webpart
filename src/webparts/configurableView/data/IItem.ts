@@ -8,6 +8,7 @@ export interface IItem {
     url: string;
     targetBlank: boolean;
     inEvidence: boolean;
+    buttonText: string;
 }
 
 export interface IItemImage {

@@ -7,6 +7,7 @@ export interface IFields {
     url: string;
     targetBlank: string;
     inEvidence: string;
+    buttonText: string;
 }
 
 export interface IListParams {

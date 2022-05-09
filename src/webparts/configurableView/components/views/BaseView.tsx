@@ -27,24 +27,10 @@ export default class BaseView extends React.Component<IViewProps, {}> {
     const { items, columns } = this.props;
 
     const controls = items.map((item: IItem, index: number) => {
-      let classNameCol = styles.gridCol6;
-      switch (columns) {
-        case 1:
-          classNameCol = styles.gridCol;
-          break;
-        case 2:
-          classNameCol = styles.gridCol2;
-          break;
-        case 3:
-          classNameCol = styles.gridCol3;
-          break;
-        case 4:
-          classNameCol = styles.gridCol4;
-          break;
-        case 5:
-          classNameCol = styles.gridCol5;
-          break;
-      }
+      const classNameCol =
+        columns > 0 && columns < 6
+          ? styles[`gridCol${columns}`]
+          : styles.gridCol6;
 
       return <div className={classNameCol}>{this.getItem(item)}</div>;
     });
@@ -84,7 +70,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
           },
           width: 144,
         },
-      ]
+      ],
     };
 
     const cardClassName =
@@ -124,9 +110,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
 
     const imageControl =
       item.image.isIcon === true ? (
-        <DocumentCardPreview {...previewPropsUsingIcon}
-       
-        />
+        <DocumentCardPreview {...previewPropsUsingIcon} />
       ) : (
         <DocumentCardPreview
           previewImages={[previewImage]}

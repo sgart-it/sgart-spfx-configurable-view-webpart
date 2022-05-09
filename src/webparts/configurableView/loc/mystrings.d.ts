@@ -36,6 +36,8 @@ declare interface IConfigurableViewWebPartStrings {
   TargetBlankFieldNameDescription: string;
   InEvidenceFieldNameLabel: string;
   InEvidenceFieldNameDescription: string;
+  ButtonTextFieldNameLabel: string;
+  ButtonTextFieldNameDescription: string;
 
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;

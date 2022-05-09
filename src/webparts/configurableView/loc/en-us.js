@@ -37,6 +37,8 @@ define([], function () {
     "TargetBlankFieldNameDescription": "FieldName or #true",
     "InEvidenceFieldNameLabel": "In evidence",
     "InEvidenceFieldNameDescription": "FieldName or #true",
+    "ButtonTextFieldNameLabel": "Button text",
+    "ButtonTextFieldNameDescription": "",
 
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
