@@ -30,7 +30,7 @@ define([], function () {
     "UserFieldNameLabel": "User name",
     "UserFieldNameDescription": "FieldName or FieldName/LinkedFieldName (Author/Title)",
     "ImageFieldNameLabel": "Image",
-    "ImageFieldNameDescription": "FieldName or FieldName:image or #StaticIconName",
+    "ImageFieldNameDescription": "FieldName or FieldName:image or #StaticIconName or FieldName/FieldName|string and palceholder {{value}} (ex. Author/Name|/_layouts/15/userphoto.aspx?size=S&accountname={{value}})",
     "UrlFieldNameLabel": "Url",
     "UrlFieldNameDescription": "FieldName (FileRef, Url, ...) or FieldName:url or FieldName:description",
     "TargetBlankFieldNameLabel": "Open in new window",

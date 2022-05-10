@@ -16,10 +16,13 @@ export default class ModelView extends React.Component<IViewProps, {}> {
       viewModel === ViewModel.ButtonMax ||
       viewModel === ViewModel.ButtonImageFull ||
       viewModel === ViewModel.Card ||
-      viewModel === ViewModel.ListAlternate;
+      viewModel === ViewModel.ListAlternate ||
+      viewModel === ViewModel.UserMini;
 
     const showDescription =
-      viewModel === ViewModel.ButtonMax || viewModel === ViewModel.Card;
+      viewModel === ViewModel.ButtonMax ||
+      viewModel === ViewModel.Card ||
+      viewModel === ViewModel.UserMini;
 
     const controls = this.getControls(
       items,
@@ -28,7 +31,8 @@ export default class ModelView extends React.Component<IViewProps, {}> {
       showDescription
     );
 
-    const modelClassName = styles[`viewModel${ViewModel[viewModel]}`] ?? "";
+    const modelClassName =
+      styles[`viewModel${ViewModel[viewModel]}`] ?? `__?${viewModel}?__`;
 
     const rootClassName = `${styles.grid} ${styles.viewModelBase} ${modelClassName}`;
 

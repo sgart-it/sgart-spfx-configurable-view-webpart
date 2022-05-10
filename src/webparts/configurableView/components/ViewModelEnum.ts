@@ -5,5 +5,6 @@ export enum ViewModel {
     ButtonMax = 4,
     ButtonImageFull = 5,
     Card = 6,
-    ListAlternate = 7
+    ListAlternate = 7,
+    UserMini = 8
 }

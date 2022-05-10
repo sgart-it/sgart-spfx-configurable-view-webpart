@@ -17,8 +17,9 @@ const _httpOptionsGet: ISPHttpClientOptions = {
 };
 
 const STATIC_TEXT_PREFIX = '#';
-const FORMAT_SEPARATOR = ':';
+const FIELD_TYPE_SEPARATOR = ':';
 const SUBFIELD_SEPARATOR = '/';
+const FORMAT_SEPARATOR = '|';
 const ERROR_PREFIX = 'Custom error: ';
 
 let _context: WebPartContext = null;
@@ -77,7 +78,13 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
         if (validFields.length > 0) {
             selectParams = 'Id,' + validFields
                 .map(name => {
-                    const i = name.indexOf(FORMAT_SEPARATOR);
+                    const iSep = name.indexOf(FIELD_TYPE_SEPARATOR);
+                    const iFormat = name.indexOf(FORMAT_SEPARATOR);
+                    let i = -1;
+                    if (iSep >= 0)
+                        i = iSep;
+                    if (iFormat >= 0 && (i === -1 || iFormat < iSep))
+                        i = iFormat;
                     if (i !== -1)
                         return name.substring(0, i);
                     else
@@ -172,30 +179,41 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
 
 };
 
+// name example: #StaticText, FiledName, FiledName/FieldName, FiledName:image, FiledName:date, FiledName/FieldName|http://www?q={{value}}
 const getFieldParams = (item: object, name: string): IFieldParams => {
     if (undefined === name || null === name || name.length === 0) return null;
 
+    let str = name;
+
     const p: IFieldParams = {
-        name: name,
+        name: str,
         subName: null,
-        format: '',
-        value: null
+        fieldType: null,
+        value: null,
+        formatValue: null
     };
 
-    if (p.name[0] === STATIC_TEXT_PREFIX) {
-        p.value = name.substring(1);
+    if (str[0] === STATIC_TEXT_PREFIX) {
+        p.value = str.substring(1);
     } else {
-
-        const i1 = p.name.indexOf(FORMAT_SEPARATOR);
-        if (i1 > 0) {
-            p.name = p.name.substring(0, i1);
-            p.format = name.substring(i1 + 1).toLocaleLowerCase();
+        // format
+        let iFormat = str.indexOf(FORMAT_SEPARATOR);
+        if (iFormat >= 0) {
+            p.formatValue = str.substring(iFormat + 1);
+            str = str.substring(0, iFormat);
         }
 
-        const i2 = p.name.indexOf(SUBFIELD_SEPARATOR);
-        if (i2 > 0) {
-            p.subName = p.name.substring(i2 + 1);
-            p.name = p.name.substring(0, i2);
+        // type
+        const iType = str.indexOf(FIELD_TYPE_SEPARATOR);
+        if (iType > 0) {
+            p.fieldType = str.substring(iType + 1).toLocaleLowerCase();
+            str = str.substring(0, iType);
+        }
+
+        const iSubfield = p.name.indexOf(SUBFIELD_SEPARATOR);
+        if (iSubfield > 0) {
+            p.subName = str.substring(iSubfield + 1);
+            p.name = str.substring(0, iSubfield);
             p.value = item[p.name][p.subName];
         } else {
             p.value = item[p.name];
@@ -209,22 +227,35 @@ const getString = (item: object, name: string): string | null => {
         const p = getFieldParams(item, name);
         if (null === p || undefined === p.value || null === p.value) return null;
 
-        switch (p.format) {
+        let value = null;
+        switch (p.fieldType) {
             case 'html':
-                return p.value;
+                value = p.value;
+                break;
             case 'url':
-                return p.value['Url'];
+                value = p.value['Url'];
+                break;
             case 'description':
-                return escape(p.value['Description']);
+                value = escape(p.value['Description']);
+                break;
             case 'image':
                 if (p.value[0] === '{') {
                     var j = JSON.parse(p.value);
-                    return j.serverRelativeUrl;
+                    value = j.serverRelativeUrl;
+                } else {
+                    value = p.value;
                 }
-                return p.value;
+                break;
             default:
-                return escape(p.value);
+                value = escape(p.value);
+                break;
         }
+        // /_layouts/15/userphoto.aspx?size=S&accountname=i:0#.f|membership|xxx@nnnn.onmicrosoft.com
+        // /_layouts/15/userphoto.aspx?size=S&accountname={{value}}
+        if (p.formatValue !== null) {
+            return p.formatValue.replace(/\{\{value\}\}/gi, p.value);
+        }
+        return value;
     } catch (error) {
         console.error('getString', error);
         return null;

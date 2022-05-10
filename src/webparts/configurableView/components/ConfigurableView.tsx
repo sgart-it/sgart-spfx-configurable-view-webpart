@@ -16,7 +16,7 @@ import CardColumnView from "./views/CardColumnView";
 import { IViewProps } from "./views/IViewProps";
 import ModelView from "./views/ModelView";
 
-const VERSION = "1.2022-05-09";
+const VERSION = "1.2022-05-10";
 
 export default class ConfigurableView extends React.Component<
   IConfigurableViewProps,

@@ -44,7 +44,7 @@ Orange theme
 
 .configurableView {
   overflow: hidden;
-  padding: 1em;
+  padding: 0;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
@@ -572,6 +572,62 @@ Orange theme
       font-weight: bold;
       color: "[theme:themePrimary, default: #0078d4]";
     }
+  }
+}
+
+.viewModelBase.viewModelUserMini {
+  :global {
+
+    .sgart-spfx-cv-button {
+      border: 0;
+      height: 76px;
+
+      
+      &:hover {
+        text-decoration: none;
+        background-color: "[theme:bodyStandoutBackground, default: #faf9f8]";
+        border-width: 1px;
+        border-style: solid;
+        border-color: "[theme:themeDarker, default: #004578]";
+      }
+
+      &.sgart-spfx-cv-evidence {
+        background-color: inherit;
+        color: inherit;
+
+        .sgart-spfx-cv-text {
+          color: "[theme:themePrimary, default: #0078d4]";
+        }
+      }
+    }
+    .sgart-spfx-cv-icon-container {
+      border: 0;
+      width: unset;
+      min-width: 48px;
+      height: unset;
+      border-radius: 50%;
+    }
+
+    .sgart-spfx-cv-icon-container img {
+      width: 48px;
+      height: 48px;
+
+    }
+
+    .sgart-spfx-cv-text-container {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .sgart-spfx-cv-text {
+      font-weight: 600;
+    }
+
+    .sgart-spfx-cv-description {
+      display: block;
+    }
+
   }
 }
 /*
