@@ -32,8 +32,8 @@ export default class ConfigurableView extends React.Component<
     this.state = {
       success: false,
       items: [],
-      error: null,
-      url: null,
+      error: undefined,
+      url: undefined,
     };
   }
 
@@ -44,15 +44,13 @@ export default class ConfigurableView extends React.Component<
       viewType,
       viewModel,
 
-      isDarkTheme,
       environmentMessage,
       hasTeamsContext,
-      userDisplayName,
     } = this.props;
 
     const isTitleVivible = !isNullOrWhiteSpace(title);
 
-    let viewCtrl: React.ReactElement<IConfigurableViewProps> = null;
+    let viewCtrl: React.ReactElement<IConfigurableViewProps> = undefined;
 
     try {
       viewCtrl = this.getView();
@@ -65,9 +63,8 @@ export default class ConfigurableView extends React.Component<
 
     return (
       <section
-        className={`${styles.configurableView} ${
-          hasTeamsContext ? styles.teams : ""
-        }`}
+        className={`${styles.configurableView} ${hasTeamsContext ? styles.teams : ""
+          }`}
       >
         {isTitleVivible && (
           <div className={styles.title}>
@@ -93,16 +90,13 @@ export default class ConfigurableView extends React.Component<
             <div>Version: {VERSION}</div>
             <div>
               Author:{" "}
-              <a
-                href="https://www.sgart.it?SPFxConfigurableView"
-                target="_blank"
-              >
+              <a href="https://www.sgart.it?SPFxConfigurableView" target="_blank" rel="noreferrer">
                 Sgart.it
               </a>
             </div>
             <hr />
-            <div>ViewType: {viewType} ({(ViewType as any)[viewType] })</div>
-            <div>ViewModel: {viewModel} ({(ViewModel as any)[viewModel] })</div>
+            <div>ViewType: {(ViewType as any)[viewType]} ({viewType})</div>
+            <div>ViewModel: {(ViewModel as any)[viewModel]} ({viewModel})</div>
             <hr />
             <div>API url: {this.state.url}</div>
           </MessageBar>
@@ -149,13 +143,13 @@ export default class ConfigurableView extends React.Component<
   }
 
   public async componentDidMount(): Promise<void> {
-    this.loadItems();
+    await this.loadItems();
   }
 
   public async componentDidUpdate(
     prevProps: IConfigurableViewProps,
     prevState: IConfigurableViewState
-  ) {
+  ): Promise<void> {
     if (
       prevProps.webRelativeUrl !== this.props.webRelativeUrl ||
       prevProps.listName !== this.props.listName ||
@@ -171,11 +165,11 @@ export default class ConfigurableView extends React.Component<
       prevProps.targetBlankFieldName !== this.props.targetBlankFieldName ||
       prevProps.inEvidenceFieldName !== this.props.inEvidenceFieldName
     ) {
-      this.loadItems();
+      await this.loadItems();
     }
   }
 
-  private async loadItems() {
+  private async loadItems(): Promise<void> {
     const params: IListParams = {
       webRelativeUrl: this.props.webRelativeUrl,
       listName: this.props.listName,

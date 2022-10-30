@@ -43,16 +43,16 @@ export default class ModelView extends React.Component<IViewProps, {}> {
     );
   }
 
-  private getControls(
+  private getControls (
     items: IItem[],
     columns: number,
     showImage: boolean,
     showDescription: boolean
-  ) {
+  ) : JSX.Element[] {
     return items.map((item: IItem) => {
       const titleIsNull = item.title === "";
       const target = item.targetBlank === true ? "_blank" : "_self";
-      const url = isNullOrWhiteSpace(item.url) ? null : item.url;
+      const url = isNullOrWhiteSpace(item.url) ? undefined : item.url;
       const inEvidenceClassName =
         item.inEvidence === true ? " sgart-spfx-cv-evidence" : "";
 
@@ -75,9 +75,9 @@ export default class ModelView extends React.Component<IViewProps, {}> {
       const classNameCol = getClassNameCol(columns);
 
       return (
-        <div className={classNameCol}>
+        <div className={classNameCol} key={item.id}>
           {titleIsNull ? (
-            <div className="sgart-spfx-cv-button sgart-spfx-cv-disabled"></div>
+            <div className="sgart-spfx-cv-button sgart-spfx-cv-disabled" />
           ) : (
             <a
               href={url}
@@ -107,7 +107,7 @@ export default class ModelView extends React.Component<IViewProps, {}> {
                   </a>
                 )}
               </span>
-              <span className="sgart-spfx-cv-evidence-flag"></span>
+              <span className="sgart-spfx-cv-evidence-flag" />
             </a>
           )}
         </div>

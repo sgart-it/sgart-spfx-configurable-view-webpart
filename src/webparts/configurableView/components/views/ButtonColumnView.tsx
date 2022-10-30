@@ -13,18 +13,15 @@ export default class ButtonColumnView extends React.Component<IViewProps, {}> {
     const { items, columns } = this.props;
     const controls = items.map((item: IItem, index: number) => {
       const target = item.targetBlank === true ? "_blank" : "_self";
-      const icon =
-        typeof item.image.src === "string"
-          ? { iconName: item.image.src }
-          : null;
-      const url = isNullOrWhiteSpace(item.url) ? null : item.url;
+      const icon = typeof item.image.src === "string" ? { iconName: item.image.src } : undefined;
+      const url = isNullOrWhiteSpace(item.url) ? undefined : item.url;
       const classNameCol =
         columns > 0 && columns < 6
           ? getClassNameCol(columns)
           : styles.gridCol6;
 
       return (
-        <div className={classNameCol}>
+        <div className={classNameCol} key={item.id}>
           {item.inEvidence === true ? (
             <PrimaryButton
               text={item.title}

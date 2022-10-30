@@ -4,7 +4,6 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneDropdown,
-  PropertyPaneLabel,
   PropertyPaneLink,
   PropertyPaneSlider,
   PropertyPaneTextField

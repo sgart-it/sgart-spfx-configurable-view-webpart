@@ -1,9 +1,9 @@
 export interface IItem {
     id: number;
     title: string;
-    description: string | null;
-    date: string | null;
-    user: string | null;
+    description: string | undefined;
+    date: string | undefined;
+    user: string | undefined;
     image: IItemImage;
     url: string;
     targetBlank: boolean;
@@ -12,7 +12,7 @@ export interface IItem {
 }
 
 export interface IItemImage {
-    src: string | null;
+    src: string | undefined;
     isIcon: boolean;
 }
 
@@ -20,6 +20,6 @@ export interface IResult {
     success: boolean;
     items: IItem[];
     responseJson: any;
-    error: string | null;
+    error: string | undefined;
     url: string;
 }

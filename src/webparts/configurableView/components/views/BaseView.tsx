@@ -8,7 +8,6 @@ import {
   DocumentCard,
   DocumentCardActivity,
   DocumentCardDetails,
-  DocumentCardImage,
   DocumentCardPreview,
   DocumentCardTitle,
   DocumentCardType,
@@ -16,23 +15,22 @@ import {
   IDocumentCardPreviewImage,
   IDocumentCardPreviewProps,
   IDocumentCardStyles,
-  IIconProps,
+  //IIconProps,
 } from "office-ui-fabric-react";
 
 const theme = getTheme();
-const { palette, fonts } = theme;
+const { fonts } = theme;
 
 export default class BaseView extends React.Component<IViewProps, {}> {
   public render(): React.ReactElement<IViewProps> {
     const { items, columns } = this.props;
 
-    const controls = items.map((item: IItem, index: number) => {
-      const classNameCol =
-        columns > 0 && columns < 6
-          ? getClassNameCol(columns)
-          : styles.gridCol6;
+    const controls = items.map((item: IItem) => {
+      const classNameCol = columns > 0 && columns < 6
+        ? getClassNameCol(columns)
+        : styles.gridCol6;
 
-      return <div className={classNameCol}>{this.getItem(item)}</div>;
+      return <div className={classNameCol} key={item.id}>{this.getItem(item)}</div>;
     });
 
     return (
@@ -42,18 +40,17 @@ export default class BaseView extends React.Component<IViewProps, {}> {
     );
   }
 
-  private getItem(item: IItem) {
+  private getItem(item: IItem): JSX.Element {
     const titleIsNull = item.title === "";
-    const showImage = titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
-    const description = titleIsNull ? null : item.description;
-    const url = titleIsNull ? null : item.url;
-    const target = titleIsNull ? null : item.targetBlank ? "_blank" : "_self";
+    //const showImage = titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
+    //const description = titleIsNull ? null : item.description;
+    const url = titleIsNull ? undefined : item.url;
+    const target = titleIsNull ? undefined : item.targetBlank ? "_blank" : "_self";
     const showUser = !isNullOrWhiteSpace(item.user);
-    const showActivity =
-      titleIsNull === false && (showUser || !isNullOrWhiteSpace(item.date));
+    const showActivity = titleIsNull === false && (showUser || !isNullOrWhiteSpace(item.date));
 
     // style
-    const fontIcon = fonts.xxLarge;
+    //const fontIcon = fonts.xxLarge;
     const imageHeight = 120;
 
     const previewPropsUsingIcon: IDocumentCardPreviewProps = {
@@ -72,15 +69,14 @@ export default class BaseView extends React.Component<IViewProps, {}> {
       ],
     };
 
-    const cardClassName =
-      item.inEvidence === true ? styles.borderColorPrimary : null;
+    const cardClassName = item.inEvidence === true ? styles.borderColorPrimary : undefined;
 
     const previewImage: IDocumentCardPreviewImage = {
       previewImageSrc: item.image.src,
       height: imageHeight,
     };
 
-    const iconProps: IIconProps = {
+    /*const iconProps: IIconProps = {
       iconName: item.image.src,
       styles: {
         root: {
@@ -95,10 +91,10 @@ export default class BaseView extends React.Component<IViewProps, {}> {
           backgroundColor: item.inEvidence ? palette.accent : null,
         },
       },
-    };
+    };*/
 
     const titleClassName =
-      item.inEvidence === true ? styles.colorPrimary : null;
+      item.inEvidence === true ? styles.colorPrimary : undefined;
 
     const previewStyles: IDocumentCardStyles = {
       root: {
@@ -118,7 +114,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
       );
 
     const people: IDocumentCardActivityPerson[] = [
-      { name: showUser ? item.user : null, profileImageSrc: null },
+      { name: showUser ? item.user : undefined, profileImageSrc: undefined },
     ];
 
     return (
@@ -136,7 +132,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
             <DocumentCardActivity
               activity={item.date}
               people={people}
-              className={showUser ? null : styles.cardDateOnly}
+              className={showUser ? undefined : styles.cardDateOnly}
             />
           )}
         </DocumentCardDetails>

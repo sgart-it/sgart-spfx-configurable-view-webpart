@@ -1,4 +1,4 @@
-import { IItem, IResult } from "../../data/IItem";
+import { IItem } from "../../data/IItem";
 import { ViewModel } from "../ViewModelEnum";
 import { ViewType } from "../ViewTypeEnum";
 

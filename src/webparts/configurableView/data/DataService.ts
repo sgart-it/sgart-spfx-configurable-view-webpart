@@ -5,7 +5,7 @@ import { IListParams } from "./IListParam";
 import { IItem, IItemImage, IResult } from "./IItem";
 import { escape } from "@microsoft/sp-lodash-subset";
 import { IFieldParams } from "./IFieldParams";
-import * as strings from "ConfigurableViewWebPartStrings";
+//import * as strings from "ConfigurableViewWebPartStrings";
 
 //NONISV|CompanyName|AppName/Version
 //const X_USERAGENT = 'NONISV|sgart.it|spfx.ConfigurableView/1';
@@ -23,7 +23,7 @@ const SUBFIELD_SEPARATOR = '/';
 const FORMAT_SEPARATOR = '|';
 const ERROR_PREFIX = 'Custom error: ';
 
-let _context: WebPartContext = null;
+let _context: WebPartContext = undefined;
 let _locale: string = 'en-US';
 const _localeDateOptions: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
 const _localeTimeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' }; //, second: '2-digit' };
@@ -36,30 +36,178 @@ export const initDataService = (context: WebPartContext): void => {
 
 const getWebRelativeUrl = (webRelativeUrl: string): string => {
     let url = webRelativeUrl;
-    if (url == null || url === '')
+    if (url === undefined || url === null || url === '')
         url = _context.pageContext.web.serverRelativeUrl;
     if (url === '/')
         return '';
     return url;
 };
 
-export const loadList = async (params: IListParams): Promise<IResult> => {
+// name example: #StaticText, FiledName, FiledName/FieldName, FiledName:image, FiledName:date, FiledName/FieldName|http://www?q={{value}}
+const getFieldParams = (item: object, name: string): IFieldParams | undefined => {
+    if (undefined === name || null === name || name.length === 0) return undefined;
+
+    let str: string = name;
+
+    const p: IFieldParams = {
+        name: str,
+        subName: undefined,
+        fieldType: undefined,
+        value: undefined,
+        formatValue: undefined
+    };
+
+    if (str[0] === STATIC_TEXT_PREFIX) {
+        p.value = str.substring(1);
+    } else {
+        // format
+        const iFormat = str.indexOf(FORMAT_SEPARATOR);
+        if (iFormat >= 0) {
+            p.formatValue = str.substring(iFormat + 1);
+            str = str.substring(0, iFormat);
+        }
+
+        // type
+        const iType = str.indexOf(FIELD_TYPE_SEPARATOR);
+        if (iType > 0) {
+            p.fieldType = str.substring(iType + 1).toLocaleLowerCase();
+            str = str.substring(0, iType);
+        }
+
+        const iSubfield: number = p.name.indexOf(SUBFIELD_SEPARATOR);
+        if (iSubfield > 0) {
+            p.subName = str.substring(iSubfield + 1);
+            p.name = str.substring(0, iSubfield);
+            p.value = (item as any)[p.name][p.subName];
+        } else {
+            p.value = (item as any)[p.name];
+        }
+    }
+    if (p === null) return undefined;
+    return p;
+};
+
+const getString = (item: object, name: string): string | undefined => {
+    try {
+        const p = getFieldParams(item, name);
+        if (undefined === p || null === p || undefined === p.value || null === p.value) return undefined;
+
+        let value = null;
+        switch (p.fieldType) {
+            case 'html':
+                value = p.value;
+                break;
+            case 'url':
+                //value = p.value['Url'];
+                value = p.value.Url;
+                break;
+            case 'description':
+                //value = escape(p.value['Description']);
+                value = escape(p.value.Description);
+                break;
+            case 'image':
+                if (p.value[0] === '{') {
+                    const j = JSON.parse(p.value);
+                    value = j.serverRelativeUrl;
+                } else {
+                    value = p.value;
+                }
+                break;
+            default:
+                value = escape(p.value);
+                break;
+        }
+        // /_layouts/15/userphoto.aspx?size=S&accountname=i:0#.f|membership|xxx@nnnn.onmicrosoft.com
+        // /_layouts/15/userphoto.aspx?size=S&accountname={{value}}
+        if (p.formatValue !== undefined && p.formatValue !== null) {
+            return p.formatValue.replace(/\{\{value\}\}/gi, p.value);
+        }
+        return value;
+    } catch (error) {
+        console.error('getString', error);
+        return undefined;
+    }
+};
+
+const getImage = (item: object, name: string): IItemImage => {
+    try {
+        const value = getString(item, name);
+        return {
+            src: value,
+            isIcon: undefined === value || null === value ? false : value.indexOf('/') === -1
+        };
+    } catch (error) {
+        console.error('getImage', error);
+        return {
+            src: null,
+            isIcon: false
+        };
+    }
+};
+
+const getDate = (item: object, name: string): string | undefined => {
+    try {
+        const p = getFieldParams(item, name);
+        if (undefined === p || null === p || undefined === p.value || null === p.value) return undefined;
+
+        if (p.name.length > 0 && p.name[0] === STATIC_TEXT_PREFIX)
+            return p.value;
+
+        //let fieldName = p.name;
+        let format = '';
+
+        const i = name.indexOf(':');
+        if (i > 0) {
+            //fieldName = name.substring(0, i);
+            format = name.substring(i + 1).toLocaleLowerCase();
+        }
+        const value = p.value;
+
+        if (undefined === value || null === value) return undefined;
+
+        if (format === 'iso' || format === 'string')
+            return value;
+
+        const date = new Date(value);
+
+        switch (format) {
+            case 'date':
+                return date.toLocaleString(_locale, _localeDateOptions);
+            case 'time':
+                return date.toLocaleString(_locale, _localeTimeOptions);
+            default:
+                return date.toLocaleString(_locale, _localeDateTimeOptions).replace(',', '');
+        }
+    } catch (error) {
+        console.error('getDate', error);
+        return undefined;
+    }
+};
+
+const getBoolean = (item: object, name: string): boolean => {
+    try {
+        const p = getFieldParams(item, name);
+        if (undefined === p || null === p || undefined === p.value || null === p.value) return null;
+
+        return p.value === true || p.value === 'true';
+    } catch (error) {
+        console.error('getBoolean', error);
+        return false;
+    }
+};
+
+export async function loadList(params: IListParams): Promise<IResult> {
     const result: IResult = {
         success: false,
         items: [],
-        responseJson: null,
+        responseJson: undefined,
         error: 'not initialized',
-        url: null
+        url: undefined
     };
 
     try {
         const {
-            webRelativeUrl,
-            listName,
-            filters,
-            orderBy,
-            top,
-            fields
+            webRelativeUrl, listName, filters, orderBy, top, fields
         } = params;
 
         const fieldsName = [
@@ -88,6 +236,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
                         i = iFormat;
                     if (i !== -1)
                         return name.substring(0, i);
+
                     else
                         return name;
                 })
@@ -107,7 +256,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
         });
 
         const relativeUrl = getWebRelativeUrl(webRelativeUrl);
-        let urlPart = '';
+        let urlPart: string = '';
         if (isNullOrWhiteSpace(listName)) {
             urlPart = 'web/webinfos';
         } else {
@@ -121,7 +270,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
                 }
             } else {
                 //{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
-                const isGuid = listName.length == 38 && listName[0] === '{' && listName[37] === '}';
+                const isGuid = listName.length === 38 && listName[0] === '{' && listName[37] === '}';
                 if (isGuid) {
                     urlPart = `web/lists(guid'${listName.substring(1, listName.length - 1)}')/items`;
                 } else {
@@ -136,14 +285,14 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
             + (expandFields.length === 0 ? '' : '&$expand=' + expandFields.join(','))
             + (isNullOrWhiteSpace(filters) ? '' : '&$filter=' + filters)
             + (isNullOrWhiteSpace(orderBy) ? '' : '&$orderby=' + orderBy)
-            + '&$top=' + top
-            ;
+            + '&$top=' + top;
 
         const response: SPHttpClientResponse = await _context.spHttpClient.get(result.url, SPHttpClient.configurations.v1, _httpOptionsGet);
         result.responseJson = await response.json();
 
         if (result.responseJson['odata.error'] !== undefined) {
-            result.error = ERROR_PREFIX + result.responseJson['odata.error']['message']['value'];
+            //result.error = ERROR_PREFIX + result.responseJson['odata.error']['message']['value'];
+            result.error = ERROR_PREFIX + result.responseJson['odata.error'].message.value;
         } else {
             const spItems = result.responseJson.value;
 
@@ -167,7 +316,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
                 });
 
                 result.success = true;
-                result.error = null;
+                result.error = undefined;
             }
         }
 
@@ -178,154 +327,6 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
     }
     return result;
 
-};
+}
 
-// name example: #StaticText, FiledName, FiledName/FieldName, FiledName:image, FiledName:date, FiledName/FieldName|http://www?q={{value}}
-const getFieldParams = (item: object, name: string): IFieldParams => {
-    if (undefined === name || null === name || name.length === 0) return null;
 
-    let str : string = name;
-
-    const p: IFieldParams = {
-        name: str,
-        subName: null,
-        fieldType: null,
-        value: null,
-        formatValue: null
-    };
-
-    if (str[0] === STATIC_TEXT_PREFIX) {
-        p.value = str.substring(1);
-    } else {
-        // format
-        let iFormat = str.indexOf(FORMAT_SEPARATOR);
-        if (iFormat >= 0) {
-            p.formatValue = str.substring(iFormat + 1);
-            str = str.substring(0, iFormat);
-        }
-
-        // type
-        const iType = str.indexOf(FIELD_TYPE_SEPARATOR);
-        if (iType > 0) {
-            p.fieldType = str.substring(iType + 1).toLocaleLowerCase();
-            str = str.substring(0, iType);
-        }
-
-        const iSubfield : number = p.name.indexOf(SUBFIELD_SEPARATOR);
-        if (iSubfield > 0) {
-            p.subName = str.substring(iSubfield + 1);
-            p.name = str.substring(0, iSubfield);
-            p.value = (item as any)[p.name][p.subName];
-        } else {
-            p.value = (item as any)[p.name];
-        }
-    }
-    return p;
-};
-
-const getString = (item: object, name: string): string | null => {
-    try {
-        const p = getFieldParams(item, name);
-        if (null === p || undefined === p.value || null === p.value) return null;
-
-        let value = null;
-        switch (p.fieldType) {
-            case 'html':
-                value = p.value;
-                break;
-            case 'url':
-                value = p.value['Url'];
-                break;
-            case 'description':
-                value = escape(p.value['Description']);
-                break;
-            case 'image':
-                if (p.value[0] === '{') {
-                    var j = JSON.parse(p.value);
-                    value = j.serverRelativeUrl;
-                } else {
-                    value = p.value;
-                }
-                break;
-            default:
-                value = escape(p.value);
-                break;
-        }
-        // /_layouts/15/userphoto.aspx?size=S&accountname=i:0#.f|membership|xxx@nnnn.onmicrosoft.com
-        // /_layouts/15/userphoto.aspx?size=S&accountname={{value}}
-        if (p.formatValue !== null) {
-            return p.formatValue.replace(/\{\{value\}\}/gi, p.value);
-        }
-        return value;
-    } catch (error) {
-        console.error('getString', error);
-        return null;
-    }
-};
-
-const getImage = (item: object, name: string): IItemImage => {
-    try {
-        const value = getString(item, name);
-        return {
-            src: value,
-            isIcon: value === null ? false : value.indexOf('/') === -1
-        };
-    } catch (error) {
-        console.error('getImage', error);
-        return {
-            src: null,
-            isIcon: false
-        };
-    }
-};
-
-const getDate = (item: object, name: string): string | null => {
-    try {
-        const p = getFieldParams(item, name);
-        if (null === p || undefined === p.value || null === p.value) return null;
-
-        if (p.name.length > 0 && p.name[0] === STATIC_TEXT_PREFIX)
-            return p.value;
-
-        let fieldName = p.name;
-        let format = '';
-
-        const i = name.indexOf(':');
-        if (i > 0) {
-            fieldName = name.substring(0, i);
-            format = name.substring(i + 1).toLocaleLowerCase();
-        }
-        const value = p.value;
-
-        if (undefined === value || null === value) return null;
-
-        if (format === 'iso' || format === 'string')
-            return value;
-
-        const date = new Date(value);
-
-        switch (format) {
-            case 'date':
-                return date.toLocaleString(_locale, _localeDateOptions);
-            case 'time':
-                return date.toLocaleString(_locale, _localeTimeOptions);
-            default:
-                return date.toLocaleString(_locale, _localeDateTimeOptions).replace(',', '');
-        }
-    } catch (error) {
-        console.error('getDate', error);
-        return null;
-    }
-};
-
-const getBoolean = (item: object, name: string): boolean => {
-    try {
-        const p = getFieldParams(item, name);
-        if (null === p || undefined === p.value || null === p.value) return null;
-
-        return p.value === true || p.value === 'true';
-    } catch (error) {
-        console.error('getBoolean', error);
-        return false;
-    }
-};
