@@ -1,12 +1,10 @@
-import { Stack, IStackTokens } from "office-ui-fabric-react/lib/Stack";
-
 import {
   DefaultButton,
   PrimaryButton,
 } from "office-ui-fabric-react/lib/Button";
 import * as React from "react";
 import { IItem } from "../../data/IItem";
-import { isNullOrWhiteSpace } from "../../Helper";
+import { isNullOrWhiteSpace, getClassNameCol } from "../../Helper";
 import { IViewProps } from "./IViewProps";
 import styles from "../ConfigurableView.module.scss";
 
@@ -22,7 +20,7 @@ export default class ButtonColumnView extends React.Component<IViewProps, {}> {
       const url = isNullOrWhiteSpace(item.url) ? null : item.url;
       const classNameCol =
         columns > 0 && columns < 6
-          ? styles[`gridCol${columns}`]
+          ? getClassNameCol(columns)
           : styles.gridCol6;
 
       return (

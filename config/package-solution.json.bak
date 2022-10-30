@@ -27,14 +27,14 @@
     },
     "features": [
       {
-        "title": "sgart-spfx-configurable-view-webpart Feature",
-        "description": "The feature that activates elements of the sgart-spfx-configurable-view-webpart solution.",
+        "title": "sgart-webpart-base Feature",
+        "description": "The feature that activates elements of the sgart-webpart-base solution.",
         "id": "7c801433-9156-47cf-b540-a691e0ee55a2",
         "version": "1.0.0.0"
       }
     ]
   },
   "paths": {
-    "zippedPackage": "solution/sgart-spfx-configurable-view-webpart.sppkg"
+    "zippedPackage": "solution/sgart-webpart-base.sppkg"
   }
 }

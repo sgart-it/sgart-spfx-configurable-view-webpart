@@ -2,7 +2,7 @@ import * as React from "react";
 import { IViewProps } from "./IViewProps";
 import { getTheme } from "office-ui-fabric-react/lib/Styling";
 import { IItem } from "../../data/IItem";
-import { isNullOrWhiteSpace } from "../../Helper";
+import { isNullOrWhiteSpace, getClassNameCol } from "../../Helper";
 import styles from "../ConfigurableView.module.scss";
 import {
   DocumentCard,
@@ -29,7 +29,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
     const controls = items.map((item: IItem, index: number) => {
       const classNameCol =
         columns > 0 && columns < 6
-          ? styles[`gridCol${columns}`]
+          ? getClassNameCol(columns)
           : styles.gridCol6;
 
       return <div className={classNameCol}>{this.getItem(item)}</div>;
@@ -44,8 +44,7 @@ export default class BaseView extends React.Component<IViewProps, {}> {
 
   private getItem(item: IItem) {
     const titleIsNull = item.title === "";
-    const showImage =
-      titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
+    const showImage = titleIsNull === false && isNullOrWhiteSpace(item.image?.src) === false;
     const description = titleIsNull ? null : item.description;
     const url = titleIsNull ? null : item.url;
     const target = titleIsNull ? null : item.targetBlank ? "_blank" : "_self";

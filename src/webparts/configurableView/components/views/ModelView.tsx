@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IItem } from "../../data/IItem";
-import { getClassNameCol, isNullOrWhiteSpace } from "../../Helper";
+import { getClassNameCol, getClassViewModel, isNullOrWhiteSpace } from "../../Helper";
 import { IViewProps } from "./IViewProps";
 import styles from "../ConfigurableView.module.scss";
 import { ViewModel } from "../ViewModelEnum";
@@ -31,8 +31,8 @@ export default class ModelView extends React.Component<IViewProps, {}> {
       showDescription
     );
 
-    const modelClassName =
-      styles[`viewModel${ViewModel[viewModel]}`] ?? `__?${viewModel}?__`;
+    const modelClassName = getClassViewModel(viewModel);
+      //styles[`viewModel${ViewModel[viewModel]}`] ?? `__?${viewModel}?__`;
 
     const rootClassName = `${styles.grid} ${styles.viewModelBase} ${modelClassName}`;
 

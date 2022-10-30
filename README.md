@@ -23,6 +23,8 @@ npm 7 se errore
 
 npm install --save --legacy-peer-deps
 
+yo @microsoft/sharepoint
+
 ## Debug
 
 gulp serve

@@ -38,8 +38,8 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
       {
         title: this.properties.webpartTitle,
         isPropertyPaneOpen: this.context.propertyPane.isPropertyPaneOpen(),
-        viewType: this.properties.viewType,
-        viewModel: this.properties.viewModel,
+        viewType: (ViewType as any)[this.properties.viewType],
+        viewModel: (ViewModel as any)[this.properties.viewModel],
         columns: this.properties.columns,
 
         webRelativeUrl: this.properties.webRelativeUrl,
@@ -100,19 +100,20 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
     return Version.parse('1.0');
   }
 
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     this.render();
 
     // carico i valori dell'enum
-    const viewTypeOptions = Object.keys(ViewType).filter((v) => isNaN(Number(v))).map(item => {
-      return { key: ViewType[item], text: item };
-    });
+    const viewTypeOptions = Object.keys(ViewType)
+      .filter(v => isNaN(Number(v)))
+      .map(item => { return { key: item, text: item }});
 
-    const modelTypeOptions = Object.keys(ViewModel).filter((v) => isNaN(Number(v))).map(item => {
-      return { key: ViewModel[item], text: item };
-    });
+    const viewModelOptions = Object.keys(ViewModel)
+      .filter((v) => isNaN(Number(v)))
+      .map(item => { return { key: item, text: item }});
 
-    const showMode = this.properties.viewType !== ViewType.Model;
+    const showMode = (ViewType as any)[this.properties.viewType] !== ViewType.Model;
 
     return {
       pages: [
@@ -134,7 +135,7 @@ export default class ConfigurableViewWebPart extends BaseClientSideWebPart<IConf
                 }),
                 PropertyPaneDropdown('viewModel', {
                   label: strings.ViewModelLabel,
-                  options: modelTypeOptions,
+                  options: viewModelOptions,
                   disabled: showMode
                 }),
                 PropertyPaneSlider('columns', {

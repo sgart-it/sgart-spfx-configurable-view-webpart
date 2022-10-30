@@ -2,13 +2,13 @@
   "@microsoft/generator-sharepoint": {
     "plusBeta": false,
     "isCreatingSolution": true,
-    "version": "1.14.0",
-    "libraryName": "sgart-webpart-base",
+    "version": "1.15.2",
+    "libraryName": "sgart-spfx-configurable-view-webpart",
     "libraryId": "c6e0153f-f1fc-4066-a8b2-b2cca77f5f66",
     "environment": "spo",
     "packageManager": "npm",
-    "solutionName": "sgart-webpart-base",
-    "solutionShortDescription": "sgart-webpart-base description",
+    "solutionName": "sgart-spfx-configurable-view-webpart",
+    "solutionShortDescription": "sgart-spfx-configurable-view-webpart description",
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "componentType": "webpart"

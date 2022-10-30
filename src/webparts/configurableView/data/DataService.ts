@@ -5,6 +5,7 @@ import { IListParams } from "./IListParam";
 import { IItem, IItemImage, IResult } from "./IItem";
 import { escape } from "@microsoft/sp-lodash-subset";
 import { IFieldParams } from "./IFieldParams";
+import * as strings from "ConfigurableViewWebPartStrings";
 
 //NONISV|CompanyName|AppName/Version
 //const X_USERAGENT = 'NONISV|sgart.it|spfx.ConfigurableView/1';
@@ -95,7 +96,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
             fields.title = 'Title';
         }
 
-        const expandFields = [];
+        const expandFields: string[] = [];
         validFields.forEach(field => {
             if (isNullOrWhiteSpace(field) === false) {
                 const i = field.indexOf(SUBFIELD_SEPARATOR);
@@ -183,7 +184,7 @@ export const loadList = async (params: IListParams): Promise<IResult> => {
 const getFieldParams = (item: object, name: string): IFieldParams => {
     if (undefined === name || null === name || name.length === 0) return null;
 
-    let str = name;
+    let str : string = name;
 
     const p: IFieldParams = {
         name: str,
@@ -210,13 +211,13 @@ const getFieldParams = (item: object, name: string): IFieldParams => {
             str = str.substring(0, iType);
         }
 
-        const iSubfield = p.name.indexOf(SUBFIELD_SEPARATOR);
+        const iSubfield : number = p.name.indexOf(SUBFIELD_SEPARATOR);
         if (iSubfield > 0) {
             p.subName = str.substring(iSubfield + 1);
             p.name = str.substring(0, iSubfield);
-            p.value = item[p.name][p.subName];
+            p.value = (item as any)[p.name][p.subName];
         } else {
-            p.value = item[p.name];
+            p.value = (item as any)[p.name];
         }
     }
     return p;

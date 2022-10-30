@@ -15,8 +15,9 @@ import ButtonColumnView from "./views/ButtonColumnView";
 import CardColumnView from "./views/CardColumnView";
 import { IViewProps } from "./views/IViewProps";
 import ModelView from "./views/ModelView";
+import { ViewModel } from "./ViewModelEnum";
 
-const VERSION = "1.2022-05-10";
+const VERSION = "1.2022-10-30";
 
 export default class ConfigurableView extends React.Component<
   IConfigurableViewProps,
@@ -100,8 +101,8 @@ export default class ConfigurableView extends React.Component<
               </a>
             </div>
             <hr />
-            <div>ViewType: {viewType}</div>
-            <div>ViewModel: {viewModel}</div>
+            <div>ViewType: {viewType} ({(ViewType as any)[viewType] })</div>
+            <div>ViewModel: {viewModel} ({(ViewModel as any)[viewModel] })</div>
             <hr />
             <div>API url: {this.state.url}</div>
           </MessageBar>

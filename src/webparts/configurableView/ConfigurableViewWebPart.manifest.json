@@ -33,8 +33,8 @@
       "properties": {
         "webRelativeUrl": "",
         "webpartTitle": "Configurable View",
-        "viewType": 5,
-        "viewModel": 1,
+        "viewType": "Model",
+        "viewModel": "Button",
         "columns": 3,
         "listName": "Test Configurable View",
         "topParam": 6,

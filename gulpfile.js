@@ -13,4 +13,8 @@ build.rig.getTasks = function () {
   return result;
 };
 
+build.mergeConfig({
+  showToast: false
+});
+
 build.initialize(require('gulp'));

@@ -1,10 +1,7 @@
-import { ViewModel } from "./components/ViewModelEnum";
-import { ViewType } from "./components/ViewTypeEnum";
-
 export interface IConfigurableViewWebPartProps {
   webpartTitle: string;
-  viewType: ViewType;
-  viewModel: ViewModel;
+  viewType: string;
+  viewModel: string;
   columns: number;
 
   webRelativeUrl: string;
